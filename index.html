@@ -22,6 +22,7 @@
             padding: 20px;
             width: 300px;
             text-align: center;
+            position: relative;
         }
         #question {
             font-size: 1.2em;
@@ -61,6 +62,13 @@
             font-size: 1.2em;
             margin-top: 20px;
         }
+        #timer {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 1em;
+            color: #ff0000;
+        }
     </style>
 </head>
 <body>
@@ -84,108 +92,109 @@
                 <div class="option-text"></div>
             </div>
         </div>
+        <div id="timer"></div>
     </div>
     <h3 id="score"></h3>
 
     <script>
         const questionPool = [
             {
-                question: " 什麼是加密貨幣？",
+                question: "1. 什麼是加密貨幣？",
                 options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
                 answer: 1
             },
             {
-                question: " 加密貨幣的價值來源於什麼技術？",
+                question: "2. 加密貨幣的價值來源於什麼技術？",
                 options: ["人工智慧", "區塊鏈", "雲端運算", "機器學習"],
                 answer: 1
             },
             {
-                question: " 哪個是第一種加密貨幣？",
+                question: "3. 哪個是第一種加密貨幣？",
                 options: ["乙太幣", "萊特幣", "比特幣", "瑞波幣"],
                 answer: 2
             },
             {
-                question: " 加密貨幣的哪一項特性使其無需第三方機構介入？",
+                question: "4. 加密貨幣的哪一項特性使其無需第三方機構介入？",
                 options: ["去中心化", "高流通性", "快速交易", "透明公開"],
                 answer: 0
             },
             {
-                question: " 加密貨幣的交易通過什麼方式保證安全？",
+                question: "5. 加密貨幣的交易通過什麼方式保證安全？",
                 options: ["雙重認證", "密碼保護", "公私鑰加密", "由銀行驗證"],
                 answer: 2
             },
             {
-                question: " 挖礦過程主要用來達成什麼目的？",
+                question: "6. 挖礦過程主要用來達成什麼目的？",
                 options: ["生成新貨幣", "驗證並記錄交易", "減少交易費用", "減少能源消耗"],
                 answer: 1
             },
             {
-                question: " 智能合約在區塊鏈上的主要用途是什麼？",
+                question: "7. 智能合約在區塊鏈上的主要用途是什麼？",
                 options: ["資料儲存", "自動執行協議條款", "驗證身份", "管理貨幣流通"],
                 answer: 1
             },
             {
-                question: " 非同質化代幣（NFT）在以下哪個領域應用較多？",
+                question: "8. 非同質化代幣（NFT）在以下哪個領域應用較多？",
                 options: ["供應鏈管理", "藝術和收藏品", "金融服務", "醫療健康"],
                 answer: 1
             },
             {
-                question: " 加密貨幣在物聯網中的應用是什麼？",
+                question: "9. 加密貨幣在物聯網中的應用是什麼？",
                 options: ["實現物聯網設備之間的支付", "儲存物聯網數據", "減少物聯網設備的成本", "提供物聯網的技術支援"],
                 answer: 0
             },
             {
-                question: " RSI 指標用於判斷什麼？",
+                question: "10. RSI 指標用於判斷什麼？",
                 options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
                 answer: 1
             },
             {
-                question: " 布林帶的上軌通常表示什麼？",
+                question: "11. 布林帶的上軌通常表示什麼？",
                 options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
                 answer: 1
             },
             {
-                question: " 費波那契回撤常用於判斷什麼？",
+                question: "12. 費波那契回撤常用於判斷什麼？",
                 options: ["支持位和阻力位", "市場情緒", "交易頻率", "市場成交量"],
                 answer: 0
             },
             {
-                question: " 移動平均線（MA）用於分析什麼？",
+                question: "13. 移動平均線（MA）用於分析什麼？",
                 options: ["短期價格趨勢", "市場的整體流動性", "市場的超賣狀態", "加密貨幣的供應量"],
                 answer: 0
             },
             {
-                question: " 加密貨幣面臨的主要挑戰之一是什麼？",
+                question: "14. 加密貨幣面臨的主要挑戰之一是什麼？",
                 options: ["能源消耗", "使用者過少", "匯率穩定", "完全由政府支持"],
                 answer: 0
             },
             {
-                question: " 未來加密貨幣的發展可能依賴於什麼因素？",
+                question: "15. 未來加密貨幣的發展可能依賴於什麼因素？",
                 options: ["技術的創新和監管的改善", "經濟低迷", "貨幣政策的一致", "傳統金融機構的取締"],
                 answer: 0
             },
             {
-                question: " 哪個因素通常會導致加密貨幣價格的波動？",
+                question: "16. 哪個因素通常會導致加密貨幣價格的波動？",
                 options: ["技術更新和需求變化", "固定的市場供應", "法幣的增發量", "天氣條件"],
                 answer: 0
             },
             {
-                question: " 什麼是「私鑰」在加密貨幣中的作用？",
+                question: "17. 什麼是「私鑰」在加密貨幣中的作用？",
                 options: ["用於公開展示交易信息", "確保交易的匿名性", "確保交易的安全和用戶的所有權", "確保交易快速處理"],
                 answer: 2
             },
             {
-                question: " 乙太坊（Ethereum）最大的特點之一是什麼？",
+                question: "18. 乙太坊（Ethereum）最大的特點之一是什麼？",
                 options: ["只能用於支付", "支援智能合約和去中心化應用", "由政府支持", "獨立於區塊鏈技術運行"],
                 answer: 1
             },
             {
-                question: " 在區塊鏈中，「共識機制」的主要作用是什麼？",
+                question: "19. 在區塊鏈中，「共識機制」的主要作用是什麼？",
                 options: ["控制交易手續費", "驗證並達成交易一致性", "增加網絡節點數量", "管理用戶帳戶"],
                 answer: 1
             },
             {
-                question: " 哪個因素可能有助於加密貨幣的長期價值穩定？",
+                question: "20. 哪個因素可能有助於加密貨幣的長期價值穩定？",
                 options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
                 answer: 2
             }
@@ -194,6 +203,9 @@
         let questions = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let timer;
+        let timeLeft = 20;
+        let startTime;
 
         function getRandomQuestions(pool, num) {
             const shuffled = pool.sort(() => 0.5 - Math.random());
@@ -207,13 +219,37 @@
             for (let i = 0; i < options.length; i++) {
                 options[i].textContent = currentQuestion.options[i];
             }
+            startTime = Date.now();
+            timeLeft = 20;
+            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                nextQuestion();
+            }
         }
 
         function selectOption(optionIndex) {
+            clearInterval(timer);
             const currentQuestion = questions[currentQuestionIndex];
+            const elapsedTime = (Date.now() - startTime) / 1000;
+
             if (optionIndex === currentQuestion.answer) {
-                score += 10;
+                if (elapsedTime <= 5) {
+                    score += 10;
+                } else if (elapsedTime <= 10) {
+                    score += 5;
+                }
             }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
                 loadQuestion();
@@ -224,7 +260,7 @@
 
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
-            document.getElementById("score").textContent = `你的分數是：${score} ;
+            document.getElementById("score").textContent = `你的分數是：${score}`;
         }
 
         window.onload = function() {

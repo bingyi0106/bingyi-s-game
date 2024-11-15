@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BINGYI'S GAME</title>
+    <title>小測驗遊戲</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -178,7 +178,7 @@
                 answer: 0
             },
             {
-                question: "哪個因素通常會導致加密貨幣價格的波動？",
+                question: " 哪個因素通常會導致加密貨幣價格的波動？",
                 options: ["技術更新和需求變化", "固定的市場供應", "法幣的增發量", "天氣條件"],
                 answer: 0
             },
@@ -218,7 +218,7 @@
 
         function loadQuestion() {
             const currentQuestion = questions[currentQuestionIndex];
-document.getElementById("question").textContent = `第 ${currentQuestionIndex + 1} 題：${currentQuestion.question}`;
+document.getElementById("question").textContent = currentQuestion.question;
             const options = document.getElementsByClassName("option-text");
             for (let i = 0; i < options.length; i++) {
                 options[i].textContent = currentQuestion.options[i];

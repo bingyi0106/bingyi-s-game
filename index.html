@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小測驗遊戲</title>
+    <title>加密貨幣答人指數</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -13,7 +13,9 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #000;
+            color: #ffffff;
+            flex-direction: column;
         }
         #quiz-container {
             background-color: #ffffff;
@@ -23,6 +25,7 @@
             width: 300px;
             text-align: center;
             position: relative;
+            color: #000;
         }
         #question {
             font-size: 1.2em;
@@ -58,21 +61,49 @@
             margin-right: 10px;
             font-weight: bold;
         }
-        #score {
-            font-size: 1.2em;
+        #score-container {
+            text-align: center;
+        }
+        #score-title {
+            font-size: 1.5em;
+            color: #ffcc00;
+        }
+        #score-value {
+            font-size: 2em;
+            color: #87CEFA;
+            margin: 10px 0;
+        }
+        #score-max {
+            font-size: 1.5em;
+            color: #d2691e;
+        }
+        #make-own {
             margin-top: 20px;
+            font-size: 1em;
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        #version {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: #32CD32;
         }
         #timer {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 1.5em;
-    color: #ff0000;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.5em;
+            color: #ff0000;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -98,7 +129,13 @@
         </div>
         <div id="timer"></div>
     </div>
-    <h3 id="score"></h3>
+    <div id="score-container" style="display: none;">
+        <div id="score-title">加密貨幣答人指數（滿分一百）</div>
+        <div id="score-value">您得分</div>
+        <div id="score-max" id="score"></div>
+        <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
+    </div>
+    
 
     <script>
         const questionPool = [
@@ -218,7 +255,7 @@
 
         function loadQuestion() {
             const currentQuestion = questions[currentQuestionIndex];
-document.getElementById("question").textContent = currentQuestion.question;
+            document.getElementById("question").textContent = currentQuestion.question;
             const options = document.getElementsByClassName("option-text");
             for (let i = 0; i < options.length; i++) {
                 options[i].textContent = currentQuestion.options[i];
@@ -264,7 +301,8 @@ document.getElementById("question").textContent = currentQuestion.question;
 
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
-            document.getElementById("score").textContent = `你的分數是：${score}`;
+            document.getElementById("score-container").style.display = "block";
+            document.getElementById("score-max").textContent = `${score} / 100`;
         }
 
         window.onload = function() {

@@ -344,15 +344,15 @@
             document.getElementById("score-max").textContent = `${score}`;
             let feedback = "";
             if (score < 40) {
-                feedback = "菜就多練";
+                feedback = "網站給你的評語:菜就多練";
             } else if (score < 60) {
                 feedback = "有點東西";
             } else if (score < 80) {
-                feedback = "還可以";
+                feedback = "組員給你的評語:還可以";
             } else if (score < 100) {
-                feedback = "牛逼差一點";
+                feedback = "作者給你的評語:牛逼差一點";
             } else {
-                feedback = "到資二甲領取麥香一杯";
+                feedback = "太厲害了!到資二甲領取麥香一杯:)";
             }
             const feedbackElement = document.createElement("div");
             feedbackElement.textContent = feedback;

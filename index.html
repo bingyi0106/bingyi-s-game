@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加密貨幣答人指數</title>
+    <title>資二甲大帥哥做的題目，全對有獎</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -291,7 +291,25 @@
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-max").textContent = `${score}`;
+            document.getElementById("score-max").textContent = `${score} / 100`;
+            let feedback = "";
+            if (score < 40) {
+                feedback = "菜就多練";
+            } else if (score < 60) {
+                feedback = "有點東西";
+            } else if (score < 80) {
+                feedback = "還可以";
+            } else if (score < 100) {
+                feedback = "牛逼差一點";
+            } else {
+                feedback = "到資二甲領取麥香一杯";
+            }
+            const feedbackElement = document.createElement("div");
+            feedbackElement.textContent = feedback;
+            feedbackElement.style.fontSize = "1.5em";
+            feedbackElement.style.marginTop = "10px";
+            feedbackElement.style.color = "#ffcc00";
+            document.getElementById("score-container").appendChild(feedbackElement);
         }
 
         window.onload = function() {

@@ -160,7 +160,127 @@
     </div>
 
     <script>
-        // JavaScript 代碼保持不變
+        const questionPool = [
+            {
+                question: "什麼是加密貨幣？",
+                options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
+                answer: 1
+            },
+            {
+                question: "加密貨幣的價值來源於什麼技術？",
+                options: ["人工智慧", "區塊鏈", "雲端運算", "機器學習"],
+                answer: 1
+            },
+            {
+                question: "哪個是第一種加密貨幣？",
+                options: ["乙太幣", "萊特幣", "比特幣", "瑞波幣"],
+                answer: 2
+            },
+            {
+                question: "加密貨幣的哪一項特性使其無需第三方機構介入？",
+                options: ["去中心化", "高流通性", "快速交易", "透明公開"],
+                answer: 0
+            },
+            {
+                question: "加密貨幣的交易通過什麼方式保證安全？",
+                options: ["雙重認證", "密碼保護", "公私鑰加密", "由銀行驗證"],
+                answer: 2
+            },
+            {
+                question: "挖礦過程主要用來達成什麼目的？",
+                options: ["生成新貨幣", "驗證並記錄交易", "減少交易費用", "減少能源消耗"],
+                answer: 1
+            },
+            {
+                question: "智能合約在區塊鏈上的主要用途是什麼？",
+                options: ["資料儲存", "自動執行協議條款", "驗證身份", "管理貨幣流通"],
+                answer: 1
+            },
+            {
+                question: "非同質化代幣（NFT）在以下哪個領域應用較多？",
+                options: ["供應鏈管理", "藝術和收藏品", "金融服務", "醫療健康"],
+                answer: 1
+            },
+            {
+                question: "加密貨幣在物聯網中的應用是什麼？",
+                options: ["實現物聯網設備之間的支付", "儲存物聯網數據", "減少物聯網設備的成本", "提供物聯網的技術支援"],
+                answer: 0
+            },
+            {
+                question: "RSI 指標用於判斷什麼？",
+                options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
+                answer: 1
+            }
+        ];
+
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 20;
+        let startTime;
+
+        function getRandomQuestions(pool, num) {
+            const shuffled = pool.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = currentQuestion.question;
+            const options = document.getElementsByClassName("option-text");
+            for (let i = 0; i < options.length; i++) {
+                options[i].textContent = currentQuestion.options[i];
+            }
+            startTime = Date.now();
+            timeLeft = 20;
+            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                nextQuestion();
+            }
+        }
+
+        function selectOption(optionIndex) {
+            clearInterval(timer);
+            const currentQuestion = questions[currentQuestionIndex];
+            const elapsedTime = (Date.now() - startTime) / 1000;
+
+            if (optionIndex === currentQuestion.answer) {
+                if (elapsedTime <= 5) {
+                    score += 10;
+                } else if (elapsedTime <= 10) {
+                    score += 5;
+                }
+            }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                displayScore();
+            }
+        }
+
+        function displayScore() {
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("score-container").style.display = "block";
+            document.getElementById("score-max").textContent = `${score} / 100`;
+        }
+
+        window.onload = function() {
+            questions = getRandomQuestions(questionPool, 10);
+            loadQuestion();
+        };
     </script>
 </body>
 </html>

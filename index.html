@@ -348,7 +348,7 @@
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-max").textContent = `${score} / 100`;
+            document.getElementById("score-max").textContent = `${score} / ${questions.length * 10}`;
             let feedback = "";
             if (score < 40) {
                 feedback = "菜就多練";
@@ -376,7 +376,7 @@
         }
 
         window.onload = function() {
-            questions = getRandomQuestions(questionPool, 20);
+            questions = getRandomQuestions(questionPool, 10);
             loadQuestion();
         };
     </script>

@@ -348,7 +348,7 @@
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-max").textContent = `${score} / ${questions.length * 10}`;
+            document.getElementById("score-max").textContent = `${score} `;
             let feedback = "";
             if (score < 40) {
                 feedback = "菜就多練";
@@ -359,7 +359,7 @@
             } else if (score < 100) {
                 feedback = "牛逼差一點";
             } else {
-                feedback = "到資二甲領取麥香一杯";
+                feedback = "截此圖到資二甲找大帥哥領取麥香一杯";
             }
             const feedbackElement = document.createElement("div");
             feedbackElement.textContent = feedback;

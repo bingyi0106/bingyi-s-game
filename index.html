@@ -170,6 +170,7 @@
         <div id="timer"></div>
     </div>
     <div id="score-container">
+        <img src="egg.jpg" alt="Golden Egg" style="float: right; margin-left: 20px; width: 150px; height: auto;">
         <div id="score-title">加密貨幣答人指數</div>
         <div id="score-value">您得分</div>
         <div id="score-max" id="score"></div>
@@ -341,18 +342,18 @@
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-max").textContent = `${score}`;
+            document.getElementById("score-max").textContent = `${score} / 100`;
             let feedback = "";
             if (score < 40) {
-                feedback = "網站給你的評語:菜就多練";
+                feedback = "菜就多練";
             } else if (score < 60) {
                 feedback = "有點東西";
             } else if (score < 80) {
-                feedback = "組員給你的評語:還可以";
+                feedback = "還可以";
             } else if (score < 100) {
-                feedback = "作者給你的評語:牛逼差一點";
+                feedback = "牛逼差一點";
             } else {
-                feedback = "太厲害了!到資二甲領取麥香一杯:)";
+                feedback = "到資二甲領取麥香一杯";
             }
             const feedbackElement = document.createElement("div");
             feedbackElement.textContent = feedback;
@@ -363,7 +364,7 @@
         }
 
         window.onload = function() {
-            questions = getRandomQuestions(questionPool, 10);
+            questions = getRandomQuestions(questionPool, 20);
             loadQuestion();
         };
     </script>

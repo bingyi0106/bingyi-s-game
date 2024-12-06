@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>資二甲大帥哥做的題目，全對有獎</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -223,12 +222,12 @@
         <div id="score-title">加密貨幣答人指數</div>
         <div id="score-value">您得分</div>
         <div id="date-time"></div>
-        <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
+        <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSITE</a>
     </div>
 
     <script>
         const questionPool = [
-             {
+            {
                 question: "什麼是加密貨幣？",
                 options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
                 answer: 1
@@ -277,7 +276,7 @@
                 question: "RSI 指標用於判斷什麼？",
                 options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
                 answer: 1
-            }
+            },
             {
                 question: "布林帶的上軌通常表示什麼？",
                 options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
@@ -327,7 +326,7 @@
                 question: "哪個因素可能有助於加密貨幣的長期價值穩定？",
                 options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
                 answer: 2
-             }
+            }
         ];
 
         let questions = [];
@@ -345,7 +344,8 @@
         }
 
         function getRandomQuestions(pool, num) {
-            const shuffled = pool.sort(() => 0.5 - Math.random());
+            // 不直接改變原始的 questionPool
+            const shuffled = [...pool].sort(() => 0.5 - Math.random());
             return shuffled.slice(0, num);
         }
 
@@ -411,12 +411,21 @@
             } else {
                 feedback = "到資二甲領取麥香一杯";
             }
+
+            // 移除舊有的評語
+            const scoreContainer = document.getElementById("score-container");
+            const oldFeedback = scoreContainer.querySelector(".feedback");
+            if (oldFeedback) {
+                scoreContainer.removeChild(oldFeedback);
+            }
+
             const feedbackElement = document.createElement("div");
             feedbackElement.textContent = feedback;
+            feedbackElement.classList.add("feedback");
             feedbackElement.style.fontSize = "1.5em";
             feedbackElement.style.marginTop = "10px";
             feedbackElement.style.color = "#ffcc00";
-            document.getElementById("score-container").appendChild(feedbackElement);
+            scoreContainer.appendChild(feedbackElement);
 
             // 顯示日期和時間
             const dateTimeElement = document.getElementById("date-time");

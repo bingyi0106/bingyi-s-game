@@ -145,6 +145,7 @@
         #score-container {
             text-align: center;
             display: none;
+            position: relative; /* 為了讓final-image以其為定位參考 */
         }
 
         #score-title {
@@ -184,6 +185,15 @@
             margin-top: 20px;
             color: #ffcc00;
         }
+
+        /* 新增圖片樣式 */
+        #final-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px; 
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -219,6 +229,8 @@
     </div>
 
     <div id="score-container">
+        <!-- 新增圖片 -->
+        <img id="final-image" src="123egg.png" alt="蛋" />
         <div id="score-title">加密貨幣答人指數</div>
         <div id="score-value">您得分</div>
         <div id="date-time"></div>
@@ -344,7 +356,6 @@
         }
 
         function getRandomQuestions(pool, num) {
-            // 不直接改變原始的 questionPool
             const shuffled = [...pool].sort(() => 0.5 - Math.random());
             return shuffled.slice(0, num);
         }

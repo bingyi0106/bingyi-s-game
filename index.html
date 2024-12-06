@@ -18,6 +18,45 @@
             flex-direction: column;
         }
 
+        #intro-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+            color: #00ffcc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #intro-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #f8f8ff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+        }
+
+        #start-button {
+            font-size: 1.5em;
+            background-color: #000;
+            color: #00ffcc;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffcc;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        #start-button:hover {
+            background-color: #444;
+            box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
+        }
+
         #quiz-container {
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #ff00ff;
@@ -28,6 +67,7 @@
             text-align: center;
             position: relative;
             color: #00ffcc;
+            display: none;
         }
 
         #question {
@@ -121,11 +161,6 @@
             text-shadow: 0 0 10px #00ffcc;
         }
 
-        #score-max {
-            font-size: 1.5em;
-            color: #d2691e;
-        }
-
         #make-own {
             margin-top: 20px;
             font-size: 1em;
@@ -153,6 +188,14 @@
     </style>
 </head>
 <body>
+    <div id="intro-container">
+        <div id="intro-text">
+            親愛的挑戰者你好：<br>
+            接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。準備好了就按下下方按鈕進行答題。
+        </div>
+        <button id="start-button" onclick="startGame()">進入遊戲</button>
+    </div>
+
     <div id="quiz-container">
         <h2 id="question"></h2>
         <div id="options">
@@ -175,10 +218,10 @@
         </div>
         <div id="timer"></div>
     </div>
+
     <div id="score-container">
         <div id="score-title">加密貨幣答人指數</div>
         <div id="score-value">您得分</div>
-        <div id="score-max" id="score"></div>
         <div id="date-time"></div>
         <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
     </div>
@@ -234,7 +277,7 @@
                 question: "RSI 指標用於判斷什麼？",
                 options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
                 answer: 1
-            },
+            }
             {
                 question: "布林帶的上軌通常表示什麼？",
                 options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
@@ -284,7 +327,7 @@
                 question: "哪個因素可能有助於加密貨幣的長期價值穩定？",
                 options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
                 answer: 2
-            }
+             }
         ];
 
         let questions = [];
@@ -293,6 +336,13 @@
         let timer;
         let timeLeft = 20;
         let startTime;
+
+        function startGame() {
+            document.getElementById("intro-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            questions = getRandomQuestions(questionPool, 10);
+            loadQuestion();
+        }
 
         function getRandomQuestions(pool, num) {
             const shuffled = pool.sort(() => 0.5 - Math.random());
@@ -348,7 +398,7 @@
         function displayScore() {
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-max").textContent = `${score} `;
+            document.getElementById("score-value").textContent = score;
             let feedback = "";
             if (score < 40) {
                 feedback = "菜就多練";
@@ -374,11 +424,6 @@
             const formattedDateTime = `${currentDate.getFullYear()}/${String(currentDate.getMonth() + 1).padStart(2, '0')}/${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
             dateTimeElement.textContent = formattedDateTime;
         }
-
-        window.onload = function() {
-            questions = getRandomQuestions(questionPool, 10);
-            loadQuestion();
-        };
     </script>
 </body>
 </html>

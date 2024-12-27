@@ -228,7 +228,7 @@
 
     <script>
         const questionPool = [
-             {
+            {
                 question: "什麼是加密貨幣？",
                 options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
                 answer: 1
@@ -277,7 +277,7 @@
                 question: "RSI 指標用於判斷什麼？",
                 options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
                 answer: 1
-            }
+            },  
             {
                 question: "布林帶的上軌通常表示什麼？",
                 options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
@@ -327,7 +327,7 @@
                 question: "哪個因素可能有助於加密貨幣的長期價值穩定？",
                 options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
                 answer: 2
-             }
+            }
         ];
 
         let questions = [];
@@ -345,6 +345,7 @@
         }
 
         function getRandomQuestions(pool, num) {
+            // 隨機打亂後，取前 num 題
             const shuffled = pool.sort(() => 0.5 - Math.random());
             return shuffled.slice(0, num);
         }
@@ -376,11 +377,12 @@
             const currentQuestion = questions[currentQuestionIndex];
             const elapsedTime = (Date.now() - startTime) / 1000;
 
+            // 答對才計分，依照耗時不同給分
             if (optionIndex === currentQuestion.answer) {
                 if (elapsedTime <= 5) {
-                    score += 10;
+                    score += 10;  // 5 秒內答對給 10 分
                 } else if (elapsedTime <= 10) {
-                    score += 5;
+                    score += 5;   // 10 秒內答對給 5 分
                 }
             }
             nextQuestion();
@@ -399,6 +401,8 @@
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("score-container").style.display = "block";
             document.getElementById("score-value").textContent = score;
+
+            // 評語
             let feedback = "";
             if (score < 40) {
                 feedback = "菜就多練";
@@ -421,7 +425,12 @@
             // 顯示日期和時間
             const dateTimeElement = document.getElementById("date-time");
             const currentDate = new Date();
-            const formattedDateTime = `${currentDate.getFullYear()}/${String(currentDate.getMonth() + 1).padStart(2, '0')}/${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
+            const formattedDateTime = 
+                `${currentDate.getFullYear()}/` +
+                `${String(currentDate.getMonth() + 1).padStart(2, '0')}/` +
+                `${String(currentDate.getDate()).padStart(2, '0')} ` +
+                `${String(currentDate.getHours()).padStart(2, '0')}:` +
+                `${String(currentDate.getMinutes()).padStart(2, '0')}`;
             dateTimeElement.textContent = formattedDateTime;
         }
     </script>

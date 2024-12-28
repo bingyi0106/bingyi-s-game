@@ -1,438 +1,494 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>資二甲大帥哥做的題目，全對有獎</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-            color: #00ffcc;
-            flex-direction: column;
-        }
+  <meta charset="UTF-8" />
+  <title>資二甲大帥哥做的題目，全對有獎 (ES Modules版)</title>
+  
+  <!-- 這裡可以放你的 styles.css，如要外連就加一行 <link rel="stylesheet" href="styles.css" /> -->
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #020024, #090979, #00d4ff);
+      color: #00ffcc;
+      flex-direction: column;
+    }
 
-        #intro-container {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #ff00ff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
-            padding: 30px;
-            width: 400px;
-            text-align: center;
-            color: #00ffcc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    #intro-container {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #ff00ff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
+      padding: 30px;
+      width: 400px;
+      text-align: center;
+      color: #00ffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #intro-text {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      color: #f8f8ff;
+      text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+    }
+    #start-button {
+      font-size: 1.5em;
+      background-color: #000;
+      color: #00ffcc;
+      padding: 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffcc;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    #start-button:hover {
+      background-color: #444;
+      box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
+    }
 
-        #intro-text {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: #f8f8ff;
-            text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
-        }
+    #quiz-container {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #ff00ff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
+      padding: 20px;
+      width: 350px;
+      text-align: center;
+      position: relative;
+      color: #00ffcc;
+      display: none;
+    }
+    #question {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #f8f8ff;
+      text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+    }
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #1e1e1e, #222);
+      border: 2px solid #00ffff;
+      border-radius: 50px;
+      padding: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .option:hover {
+      background: #444;
+      box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffff;
+    }
+    .option-circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: #000;
+      color: #ff00ff;
+      border-radius: 50%;
+      margin-right: 10px;
+      font-weight: bold;
+      border: 2px solid #ff00ff;
+      box-shadow: 0 0 10px #ff00ff;
+    }
 
-        #start-button {
-            font-size: 1.5em;
-            background-color: #000;
-            color: #00ffcc;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffcc;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+    #timer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 2.5em;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 255, 0, 0.8);
+      text-align: center;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      }
+    }
 
-        #start-button:hover {
-            background-color: #444;
-            box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
-        }
-
-        #quiz-container {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #ff00ff;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
-            padding: 20px;
-            width: 350px;
-            text-align: center;
-            position: relative;
-            color: #00ffcc;
-            display: none;
-        }
-
-        #question {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #f8f8ff;
-            text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
-        }
-
-        #options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #1e1e1e, #222);
-            border: 2px solid #00ffff;
-            border-radius: 50px;
-            padding: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .option:hover {
-            background: #444;
-            box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffff;
-        }
-
-        .option-circle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            background: #000;
-            color: #ff00ff;
-            border-radius: 50%;
-            margin-right: 10px;
-            font-weight: bold;
-            border: 2px solid #ff00ff;
-            box-shadow: 0 0 10px #ff00ff;
-        }
-
-        #timer {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 2.5em;
-            color: #ffffff;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.8);
-            text-align: center;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            }
-        }
-
-        #score-container {
-            text-align: center;
-            display: none;
-        }
-
-        #score-title {
-            font-size: 1.8em;
-            color: #ffcc00;
-            text-shadow: 0 0 5px #ffcc00, 0 0 20px #ff00ff;
-        }
-
-        #score-value {
-            font-size: 2.5em;
-            color: #87CEFA;
-            margin: 10px 0;
-            text-shadow: 0 0 10px #00ffcc;
-        }
-
-        #make-own {
-            margin-top: 20px;
-            font-size: 1em;
-            background-color: #000;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            border: 2px solid #ff00ff;
-            box-shadow: 0 0 15px #00ffcc, 0 0 20px #ff00ff;
-        }
-
-        #make-own:hover {
-            background-color: #444;
-            box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
-        }
-
-        #date-time {
-            font-size: 1.2em;
-            margin-top: 20px;
-            color: #ffcc00;
-        }
-    </style>
+    #score-container {
+      text-align: center;
+      display: none;
+    }
+    #score-title {
+      font-size: 1.8em;
+      color: #ffcc00;
+      text-shadow: 0 0 5px #ffcc00, 0 0 20px #ff00ff;
+    }
+    #score-value {
+      font-size: 2.5em;
+      color: #87CEFA;
+      margin: 10px 0;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+    #make-own {
+      margin-top: 20px;
+      font-size: 1em;
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      border: 2px solid #ff00ff;
+      box-shadow: 0 0 15px #00ffcc, 0 0 20px #ff00ff;
+    }
+    #make-own:hover {
+      background-color: #444;
+      box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
+    }
+    #date-time {
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #ffcc00;
+    }
+  </style>
 </head>
 <body>
-    <div id="intro-container">
-        <div id="intro-text">
-            親愛的挑戰者你好：<br>
-            接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。準備好了就按下下方按鈕進行答題。
-        </div>
-        <button id="start-button" onclick="startGame()">進入遊戲</button>
+
+  <!-- 開場畫面 -->
+  <div id="intro-container">
+    <div id="intro-text">
+      親愛的挑戰者你好：<br>
+      接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。準備好了就按下下方按鈕進行答題。
     </div>
+    <button id="start-button" onclick="startGame()">進入遊戲</button>
+  </div>
 
-    <div id="quiz-container">
-        <h2 id="question"></h2>
-        <div id="options">
-            <div class="option" onclick="selectOption(0)">
-                <div class="option-circle">A</div>
-                <div class="option-text"></div>
-            </div>
-            <div class="option" onclick="selectOption(1)">
-                <div class="option-circle">B</div>
-                <div class="option-text"></div>
-            </div>
-            <div class="option" onclick="selectOption(2)">
-                <div class="option-circle">C</div>
-                <div class="option-text"></div>
-            </div>
-            <div class="option" onclick="selectOption(3)">
-                <div class="option-circle">D</div>
-                <div class="option-text"></div>
-            </div>
-        </div>
-        <div id="timer"></div>
+  <!-- 題目畫面 -->
+  <div id="quiz-container">
+    <h2 id="question"></h2>
+    <div id="options">
+      <div class="option" onclick="selectOption(0)">
+        <div class="option-circle">A</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(1)">
+        <div class="option-circle">B</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(2)">
+        <div class="option-circle">C</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(3)">
+        <div class="option-circle">D</div>
+        <div class="option-text"></div>
+      </div>
     </div>
+    <div id="timer"></div>
+  </div>
 
-    <div id="score-container">
-        <div id="score-title">加密貨幣答人指數</div>
-        <div id="score-value">您得分</div>
-        <div id="date-time"></div>
-        <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
-    </div>
+  <!-- 分數結算畫面 -->
+  <div id="score-container">
+    <div id="score-title">加密貨幣答人指數</div>
+    <div id="score-value">您得分</div>
+    <div id="date-time"></div>
+    <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
+  </div>
 
-    <script>
-        const questionPool = [
-            {
-                question: "什麼是加密貨幣？",
-                options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
-                answer: 1
-            },
-            {
-                question: "加密貨幣的價值來源於什麼技術？",
-                options: ["人工智慧", "區塊鏈", "雲端運算", "機器學習"],
-                answer: 1
-            },
-            {
-                question: "哪個是第一種加密貨幣？",
-                options: ["乙太幣", "萊特幣", "比特幣", "瑞波幣"],
-                answer: 2
-            },
-            {
-                question: "加密貨幣的哪一項特性使其無需第三方機構介入？",
-                options: ["去中心化", "高流通性", "快速交易", "透明公開"],
-                answer: 0
-            },
-            {
-                question: "加密貨幣的交易通過什麼方式保證安全？",
-                options: ["雙重認證", "密碼保護", "公私鑰加密", "由銀行驗證"],
-                answer: 2
-            },
-            {
-                question: "挖礦過程主要用來達成什麼目的？",
-                options: ["生成新貨幣", "驗證並記錄交易", "減少交易費用", "減少能源消耗"],
-                answer: 1
-            },
-            {
-                question: "智能合約在區塊鏈上的主要用途是什麼？",
-                options: ["資料儲存", "自動執行協議條款", "驗證身份", "管理貨幣流通"],
-                answer: 1
-            },
-            {
-                question: "非同質化代幣（NFT）在以下哪個領域應用較多？",
-                options: ["供應鏈管理", "藝術和收藏品", "金融服務", "醫療健康"],
-                answer: 1
-            },
-            {
-                question: "加密貨幣在物聯網中的應用是什麼？",
-                options: ["實現物聯網設備之間的支付", "儲存物聯網數據", "減少物聯網設備的成本", "提供物聯網的技術支援"],
-                answer: 0
-            },
-            {
-                question: "RSI 指標用於判斷什麼？",
-                options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
-                answer: 1
-            },  
-            {
-                question: "布林帶的上軌通常表示什麼？",
-                options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
-                answer: 1
-            },
-            {
-                question: "費波那契回撤常用於判斷什麼？",
-                options: ["支持位和阻力位", "市場情緒", "交易頻率", "市場成交量"],
-                answer: 0
-            },
-            {
-                question: "移動平均線（MA）用於分析什麼？",
-                options: ["短期價格趨勢", "市場的整體流動性", "市場的超賣狀態", "加密貨幣的供應量"],
-                answer: 0
-            },
-            {
-                question: "加密貨幣面臨的主要挑戰之一是什麼？",
-                options: ["能源消耗", "使用者過少", "匯率穩定", "完全由政府支持"],
-                answer: 0
-            },
-            {
-                question: "未來加密貨幣的發展可能依賴於什麼因素？",
-                options: ["技術的創新和監管的改善", "經濟低迷", "貨幣政策的一致", "傳統金融機構的取締"],
-                answer: 0
-            },
-            {
-                question: "哪個因素通常會導致加密貨幣價格的波動？",
-                options: ["技術更新和需求變化", "固定的市場供應", "法幣的增發量", "天氣條件"],
-                answer: 0
-            },
-            {
-                question: "什麼是「私鑰」在加密貨幣中的作用？",
-                options: ["用於公開展示交易信息", "確保交易的匿名性", "確保交易的安全和用戶的所有權", "確保交易快速處理"],
-                answer: 2
-            },
-            {
-                question: "乙太坊（Ethereum）最大的特點之一是什麼？",
-                options: ["只能用於支付", "支援智能合約和去中心化應用", "由政府支持", "獨立於區塊鏈技術運行"],
-                answer: 1
-            },
-            {
-                question: "在區塊鏈中，「共識機制」的主要作用是什麼？",
-                options: ["控制交易手續費", "驗證並達成交易一致性", "增加網絡節點數量", "管理用戶帳戶"],
-                answer: 1
-            },
-            {
-                question: "哪個因素可能有助於加密貨幣的長期價值穩定？",
-                options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
-                answer: 2
-            }
-        ];
+  <!-- 1. 在這裡用 ES Modules 載入 Firebase + 初始化 + 提供 submitScore, getLeaderboard -->
+  <script type="module">
+    // Import Firebase (ES Modules版)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let timer;
-        let timeLeft = 20;
-        let startTime;
+    // 你的 Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbtY6rbLP96hLZzrCZlfQf-ON9LuH3pGM",
+      authDomain: "leaderboardapp-a29f3.firebaseapp.com",
+      databaseURL: "https://leaderboardapp-a29f3-default-rtdb.firebaseio.com",
+      projectId: "leaderboardapp-a29f3",
+      storageBucket: "leaderboardapp-a29f3.firebasestorage.app",
+      messagingSenderId: "308303699906",
+      appId: "1:308303699906:web:d6505c7431f1798a0d405b"
+    };
 
-        function startGame() {
-            document.getElementById("intro-container").style.display = "none";
-            document.getElementById("quiz-container").style.display = "block";
-            questions = getRandomQuestions(questionPool, 10);
-            loadQuestion();
+    // 初始化
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 提交分數
+    window.submitScore = function(playerName, score) {
+      push(ref(db, "scores"), { name: playerName, score: score });
+      console.log("已送出分數:", playerName, score);
+    };
+
+    // 取得排行榜
+    window.getLeaderboard = function(callback) {
+      onValue(ref(db, "scores"), (snapshot) => {
+        const data = snapshot.val() || {};
+        const arr = Object.values(data);
+        // 依分數大到小排序
+        arr.sort((a, b) => b.score - a.score);
+        callback(arr);
+      });
+    };
+  </script>
+
+  <!-- 2. 這裡放題目邏輯 (題庫, startGame, displayScore, etc.) -->
+  <script>
+    const questionPool = [
+     {
+        question: "什麼是加密貨幣？",
+        options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
+        answer: 1
+      },
+      {
+        question: "加密貨幣的價值來源於什麼技術？",
+        options: ["人工智慧", "區塊鏈", "雲端運算", "機器學習"],
+        answer: 1
+      },
+      {
+        question: "哪個是第一種加密貨幣？",
+        options: ["乙太幣", "萊特幣", "比特幣", "瑞波幣"],
+        answer: 2
+      },
+      {
+        question: "加密貨幣的哪一項特性使其無需第三方機構介入？",
+        options: ["去中心化", "高流通性", "快速交易", "透明公開"],
+        answer: 0
+      },
+      {
+        question: "加密貨幣的交易通過什麼方式保證安全？",
+        options: ["雙重認證", "密碼保護", "公私鑰加密", "由銀行驗證"],
+        answer: 2
+      },
+      {
+        question: "挖礦過程主要用來達成什麼目的？",
+        options: ["生成新貨幣", "驗證並記錄交易", "減少交易費用", "減少能源消耗"],
+        answer: 1
+      },
+      {
+        question: "智能合約在區塊鏈上的主要用途是什麼？",
+        options: ["資料儲存", "自動執行協議條款", "驗證身份", "管理貨幣流通"],
+        answer: 1
+      },
+      {
+        question: "非同質化代幣（NFT）在以下哪個領域應用較多？",
+        options: ["供應鏈管理", "藝術和收藏品", "金融服務", "醫療健康"],
+        answer: 1
+      },
+      {
+        question: "加密貨幣在物聯網中的應用是什麼？",
+        options: ["實現物聯網設備之間的支付", "儲存物聯網數據", "減少物聯網設備的成本", "提供物聯網的技術支援"],
+        answer: 0
+      },
+      {
+        question: "RSI 指標用於判斷什麼？",
+        options: ["市場的價格波動性", "市場的超買或超賣狀態", "市場的總交易量", "市場的流通市值"],
+        answer: 1
+      },
+      {
+        question: "布林帶的上軌通常表示什麼？",
+        options: ["市場可能超賣", "市場價格較高，可能出現回調", "市場價格較低，可能上升", "市場無波動"],
+        answer: 1
+      },
+      {
+        question: "費波那契回撤常用於判斷什麼？",
+        options: ["支持位和阻力位", "市場情緒", "交易頻率", "市場成交量"],
+        answer: 0
+      },
+      {
+        question: "移動平均線（MA）用於分析什麼？",
+        options: ["短期價格趨勢", "市場的整體流動性", "市場的超賣狀態", "加密貨幣的供應量"],
+        answer: 0
+      },
+      {
+        question: "加密貨幣面臨的主要挑戰之一是什麼？",
+        options: ["能源消耗", "使用者過少", "匯率穩定", "完全由政府支持"],
+        answer: 0
+      },
+      {
+        question: "未來加密貨幣的發展可能依賴於什麼因素？",
+        options: ["技術的創新和監管的改善", "經濟低迷", "貨幣政策的一致", "傳統金融機構的取締"],
+        answer: 0
+      },
+      {
+        question: "哪個因素通常會導致加密貨幣價格的波動？",
+        options: ["技術更新和需求變化", "固定的市場供應", "法幣的增發量", "天氣條件"],
+        answer: 0
+      },
+      {
+        question: "什麼是「私鑰」在加密貨幣中的作用？",
+        options: ["用於公開展示交易信息", "確保交易的匿名性", "確保交易的安全和用戶的所有權", "確保交易快速處理"],
+        answer: 2
+      },
+      {
+        question: "乙太坊（Ethereum）最大的特點之一是什麼？",
+        options: ["只能用於支付", "支援智能合約和去中心化應用", "由政府支持", "獨立於區塊鏈技術運行"],
+        answer: 1
+      },
+      {
+        question: "在區塊鏈中，「共識機制」的主要作用是什麼？",
+        options: ["控制交易手續費", "驗證並達成交易一致性", "增加網絡節點數量", "管理用戶帳戶"],
+        answer: 1
+      },
+      {
+        question: "哪個因素可能有助於加密貨幣的長期價值穩定？",
+        options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
+        answer: 2
+      }
+    ];
+
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 20;
+    let startTime;
+
+    function startGame() {
+      document.getElementById("intro-container").style.display = "none";
+      document.getElementById("quiz-container").style.display = "block";
+      questions = getRandomQuestions(questionPool, 10);
+      loadQuestion();
+    }
+
+    function getRandomQuestions(pool, num) {
+      const shuffled = pool.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
+    }
+
+    function loadQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById("question").textContent = currentQuestion.question;
+      const options = document.getElementsByClassName("option-text");
+      for (let i = 0; i < options.length; i++) {
+        options[i].textContent = currentQuestion.options[i];
+      }
+      startTime = Date.now();
+      timeLeft = 20;
+      document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      timeLeft--;
+      document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        nextQuestion();
+      }
+    }
+
+    function selectOption(optionIndex) {
+      clearInterval(timer);
+      const currentQuestion = questions[currentQuestionIndex];
+      const elapsedTime = (Date.now() - startTime) / 1000;
+
+      // 答對才計分
+      if (optionIndex === currentQuestion.answer) {
+        if (elapsedTime <= 5) {
+          score += 10;
+        } else if (elapsedTime <= 10) {
+          score += 5;
         }
+      }
+      nextQuestion();
+    }
 
-        function getRandomQuestions(pool, num) {
-            // 隨機打亂後，取前 num 題
-            const shuffled = pool.sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, num);
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        displayScore();
+      }
+    }
+
+    function displayScore() {
+      document.getElementById("quiz-container").style.display = "none";
+      document.getElementById("score-container").style.display = "block";
+      document.getElementById("score-value").textContent = score;
+
+      // 顯示評語
+      let feedback = "";
+      if (score < 40) feedback = "菜就多練";
+      else if (score < 60) feedback = "有點東西";
+      else if (score < 80) feedback = "還可以";
+      else if (score < 100) feedback = "牛逼差一點";
+      else feedback = "到資二甲領取麥香一杯";
+
+      const feedbackElement = document.createElement("div");
+      feedbackElement.textContent = feedback;
+      feedbackElement.style.fontSize = "1.5em";
+      feedbackElement.style.marginTop = "10px";
+      feedbackElement.style.color = "#ffcc00";
+      document.getElementById("score-container").appendChild(feedbackElement);
+
+      // 顯示日期時間
+      const dateTimeElement = document.getElementById("date-time");
+      const currentDate = new Date();
+      const formattedDateTime = 
+        `${currentDate.getFullYear()}/${
+          String(currentDate.getMonth()+1).padStart(2,'0')
+        }/${
+          String(currentDate.getDate()).padStart(2,'0')
+        } ${
+          String(currentDate.getHours()).padStart(2,'0')
+        }:${
+          String(currentDate.getMinutes()).padStart(2,'0')
+        }`;
+      dateTimeElement.textContent = formattedDateTime;
+
+      // 輸入名稱 + 提交分數
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.placeholder = "輸入您的名稱";
+      nameInput.style.marginTop = "15px";
+
+      const submitButton = document.createElement("button");
+      submitButton.textContent = "提交分數";
+      submitButton.onclick = function() {
+        const playerName = nameInput.value.trim();
+        if (!playerName) {
+          alert("請輸入名稱");
+          return;
         }
+        // 使用 ES Modules 方式載入的 submitScore
+        // 由於我們把它掛到 window.submitScore，所以可以直接呼叫
+        submitScore(playerName, score);
 
-        function loadQuestion() {
-            const currentQuestion = questions[currentQuestionIndex];
-            document.getElementById("question").textContent = currentQuestion.question;
-            const options = document.getElementsByClassName("option-text");
-            for (let i = 0; i < options.length; i++) {
-                options[i].textContent = currentQuestion.options[i];
-            }
-            startTime = Date.now();
-            timeLeft = 20;
-            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
-            timer = setInterval(updateTimer, 1000);
-        }
+        getLeaderboard((arr) => {
+          console.log("排行榜資料：", arr);
+          // 你可以在這裡把排名資料顯示到網頁上
+        });
+      };
 
-        function updateTimer() {
-            timeLeft--;
-            document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                nextQuestion();
-            }
-        }
-
-        function selectOption(optionIndex) {
-            clearInterval(timer);
-            const currentQuestion = questions[currentQuestionIndex];
-            const elapsedTime = (Date.now() - startTime) / 1000;
-
-            // 答對才計分，依照耗時不同給分
-            if (optionIndex === currentQuestion.answer) {
-                if (elapsedTime <= 5) {
-                    score += 10;  // 5 秒內答對給 10 分
-                } else if (elapsedTime <= 10) {
-                    score += 5;   // 10 秒內答對給 5 分
-                }
-            }
-            nextQuestion();
-        }
-
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                loadQuestion();
-            } else {
-                displayScore();
-            }
-        }
-
-        function displayScore() {
-            document.getElementById("quiz-container").style.display = "none";
-            document.getElementById("score-container").style.display = "block";
-            document.getElementById("score-value").textContent = score;
-
-            // 評語
-            let feedback = "";
-            if (score < 40) {
-                feedback = "菜就多練";
-            } else if (score < 60) {
-                feedback = "有點東西";
-            } else if (score < 80) {
-                feedback = "還可以";
-            } else if (score < 100) {
-                feedback = "牛逼差一點";
-            } else {
-                feedback = "到資二甲領取麥香一杯";
-            }
-            const feedbackElement = document.createElement("div");
-            feedbackElement.textContent = feedback;
-            feedbackElement.style.fontSize = "1.5em";
-            feedbackElement.style.marginTop = "10px";
-            feedbackElement.style.color = "#ffcc00";
-            document.getElementById("score-container").appendChild(feedbackElement);
-
-            // 顯示日期和時間
-            const dateTimeElement = document.getElementById("date-time");
-            const currentDate = new Date();
-            const formattedDateTime = 
-                `${currentDate.getFullYear()}/` +
-                `${String(currentDate.getMonth() + 1).padStart(2, '0')}/` +
-                `${String(currentDate.getDate()).padStart(2, '0')} ` +
-                `${String(currentDate.getHours()).padStart(2, '0')}:` +
-                `${String(currentDate.getMinutes()).padStart(2, '0')}`;
-            dateTimeElement.textContent = formattedDateTime;
-        }
-    </script>
+      const container = document.getElementById("score-container");
+      container.appendChild(nameInput);
+      container.appendChild(submitButton);
+    }
+  </script>
 </body>
 </html>

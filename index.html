@@ -479,16 +479,32 @@
         // 由於我們把它掛到 window.submitScore，所以可以直接呼叫
         submitScore(playerName, score);
 
-        getLeaderboard((arr) => {
-          console.log("排行榜資料：", arr);
-          // 你可以在這裡把排名資料顯示到網頁上
-        });
-      };
+        getLeaderboard((leaderboardArr) => {
+    console.log("排行榜資料：", leaderboardArr);
+    // 3. 把資料顯示到畫面上
+    showLeaderboard(leaderboardArr);
+  });
+};
 
-      const container = document.getElementById("score-container");
-      container.appendChild(nameInput);
-      container.appendChild(submitButton);
-    }
+      function showLeaderboard(leaderboardArr) {
+  const container = document.getElementById("score-container");
+  
+  // 如果之前有排行榜，先清掉或移除
+  const oldLb = document.getElementById("leaderboard");
+  if (oldLb) oldLb.remove();
+
+  const lbDiv = document.createElement("div");
+  lbDiv.id = "leaderboard";
+  lbDiv.style.marginTop = "20px";
+  lbDiv.style.color = "#ffcc00";
+
+  let html = "<h3>排行榜</h3>";
+  leaderboardArr.forEach((item, index) => {
+    html += `<div>${index + 1}. ${item.name} - ${item.score} 分</div>`;
+  });
+  lbDiv.innerHTML = html;
+  container.appendChild(lbDiv);
+}
   </script>
 </body>
 </html>

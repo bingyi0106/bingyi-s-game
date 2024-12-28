@@ -437,7 +437,7 @@
   else if (score < 60) feedback = "有點東西";
   else if (score < 80) feedback = "還可以";
   else if (score < 100) feedback = "牛逼差一點";
-  else feedback = "到資二甲領取麥香一杯";
+  else feedback = "節此圖到資二甲領取麥香一杯";
 
   const feedbackElement = document.createElement("div");
   feedbackElement.textContent = feedback;
@@ -464,7 +464,7 @@
   // 建立名稱輸入框和提交按鈕
   const nameInput = document.createElement("input");
   nameInput.type = "text";
-  nameInput.placeholder = "輸入您的名稱";
+  nameInput.placeholder = "輸入姓名以顯示排行榜";
   nameInput.style.marginTop = "15px";
 
   const submitButton = document.createElement("button");
@@ -486,7 +486,7 @@
 
     // 顯示提交成功訊息
     const successMessage = document.createElement("div");
-    successMessage.textContent = "分數已提交，感謝您的參與！";
+    successMessage.textContent = "分數已提交，感謝您的參與！，請稍待片刻取得排行榜資料";
     successMessage.style.marginTop = "20px";
     successMessage.style.fontSize = "1.2em";
     successMessage.style.color = "#00ff00";

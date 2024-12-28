@@ -479,20 +479,21 @@
         // 由於我們把它掛到 window.submitScore，所以可以直接呼叫
         submitScore(playerName, score);
 
-        getLeaderboard((leaderboardArr) => {
-    console.log("排行榜資料：", leaderboardArr);
-    // 3. 把資料顯示到畫面上
-    showLeaderboard(leaderboardArr);
-  });
+       getLeaderboard((arr) => {console.log("進入 getLeaderboard callback，拿到陣列：", arr);})
+  console.log("排行榜資料：", arr);
+  showLeaderboard(arr);
+};
 };
 
       function showLeaderboard(leaderboardArr) {
+  // 找要放排行榜的容器
   const container = document.getElementById("score-container");
   
-  // 如果之前有排行榜，先清掉或移除
+  // 如果之前已經有 leaderboard，先移除
   const oldLb = document.getElementById("leaderboard");
   if (oldLb) oldLb.remove();
 
+  // 建立一個新的 div
   const lbDiv = document.createElement("div");
   lbDiv.id = "leaderboard";
   lbDiv.style.marginTop = "20px";
@@ -503,6 +504,8 @@
     html += `<div>${index + 1}. ${item.name} - ${item.score} 分</div>`;
   });
   lbDiv.innerHTML = html;
+
+  // 加入頁面
   container.appendChild(lbDiv);
 }
   </script>

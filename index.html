@@ -257,8 +257,15 @@
 
   <!-- 2. 這裡放題目邏輯 (題庫, startGame, displayScore, etc.) -->
   <script type="module">
-  import { questionPool } from 'https://raw.githubusercontent.com/bingyi0106/new/main/questions.js';
-
+  import { questionPool } from 'https://github.com/bingyi0106/bingyi-s-game/blob/main/questions.js';
+ 
+    document.getElementById("start-button").addEventListener("click", () => {
+            if (!questionPool || questionPool.length === 0) {
+                alert("題庫加載失敗，請稍後重試！");
+                return;
+            }
+            console.log("題庫加載成功:", questionPool);
+            alert("遊戲開始！目前題庫包含 " + questionPool.length + " 道題目。");
   let questions = [];
   let currentQuestionIndex = 0;
   let score = 0;

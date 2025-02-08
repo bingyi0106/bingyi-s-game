@@ -1,4 +1,4 @@
-const questionPool = [
+export const questionPool = [
      {
         question: "什麼是加密貨幣？",
         options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],

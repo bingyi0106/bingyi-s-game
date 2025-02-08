@@ -2,111 +2,166 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>資二甲大帥哥做的題目，全對有獎 (ES Modules版)</title>
+  
+  <!-- 無印風樣式：使用米白色（off-white）、白色與黑色 -->
   <style>
-    /* 美化主題 */
+    /* 全站基本樣式 */
     body {
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #F5F5DC; /* 米白色 */
+      color: #000;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-      color: #00ffcc;
-      flex-direction: column;
     }
+    /* 各主要區塊共用的容器樣式 */
     #intro-container, #quiz-container, #score-container {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #ff00ff;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #ff00ff, 0 0 60px #00ffcc;
-      padding: 30px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
       width: 400px;
       text-align: center;
-      color: #00ffcc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #intro-text {
-      font-size: 1.2em;
       margin-bottom: 20px;
-      color: #f8f8ff;
-      text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+    }
+    /* 開場畫面 */
+    #intro-text {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      color: #333;
     }
     #start-button {
-      font-size: 1.5em;
-      background-color: #000;
-      color: #00ffcc;
-      padding: 15px;
-      border-radius: 10px;
+      font-size: 1.2em;
+      background-color: #fff;
+      color: #000;
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       cursor: pointer;
-      text-decoration: none;
-      border: 2px solid #00ffff;
-      box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffcc;
-      transition: background-color 0.3s, box-shadow 0.3s;
+      transition: background-color 0.3s;
     }
     #start-button:hover {
-      background-color: #444;
-      box-shadow: 0 0 25px #ff00ff, 0 0 50px #00ffff;
+      background-color: #f0f0f0;
+    }
+    /* 題目畫面 */
+    #quiz-container {
+      display: none;
     }
     #question {
       font-size: 1.5em;
       margin-bottom: 20px;
-      color: #f8f8ff;
-      text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+      color: #333;
+    }
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .option {
-      background: linear-gradient(135deg, #1e1e1e, #222);
-      border: 2px solid #00ffff;
-      border-radius: 50px;
-      padding: 15px;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
       cursor: pointer;
-      margin: 10px;
-      color: #fff;
-      transition: background-color 0.3s, box-shadow 0.3s;
+      transition: background-color 0.3s;
     }
     .option:hover {
-      background-color: #444;
-      box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffff;
+      background-color: #f9f9f9;
     }
     .option-circle {
-      width: 40px;
-      height: 40px;
-      display: inline-flex;
+      display: flex;
       justify-content: center;
       align-items: center;
-      background: #000;
-      color: #ff00ff;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      color: #000;
       border-radius: 50%;
       margin-right: 10px;
-      border: 2px solid #ff00ff;
+      font-weight: bold;
+      border: 1px solid #ccc;
     }
+    /* 計時器 */
+    #timer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.5em;
+      color: #000;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    /* 分數結算畫面 */
+    #score-title {
+      font-size: 1.8em;
+      color: #000;
+      margin-bottom: 10px;
+    }
+    #score-value {
+      font-size: 2em;
+      color: #000;
+      margin: 10px 0;
+    }
+    #make-own {
+      margin-top: 20px;
+      font-size: 1em;
+      background-color: #fff;
+      color: #000;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+    #make-own:hover {
+      background-color: #f0f0f0;
+    }
+    #date-time {
+      font-size: 1em;
+      margin-top: 10px;
+      color: #555;
+    }
+    /* 排行榜樣式 */
     #leaderboard-container {
       margin-top: 20px;
-      background: rgba(0, 0, 0, 0.9);
-      border: 2px solid #00ffcc;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #00ffcc, 0 0 60px #ff00ff;
-      padding: 20px;
-      width: 80%;
+      text-align: center;
+      color: #000;
+      font-size: 1em;
+    }
+    #leaderboard-container h3 {
+      color: #000;
+      margin-bottom: 10px;
+      font-size: 1.5em;
+    }
+    #leaderboard-container .list-container {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin: 0 auto;
+      width: 100%;
       max-width: 400px;
       text-align: left;
     }
-    .leaderboard-item {
+    #leaderboard-container .list-item {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 10px 0;
-      color: #fff;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
     }
-    .leaderboard-item span:first-child {
-      color: #ffcc00;
-    }
-    .leaderboard-item span:last-child {
-      color: #87CEEB;
+    #leaderboard-container .list-item:last-child {
+      border-bottom: none;
     }
   </style>
 </head>
@@ -116,106 +171,282 @@
   <div id="intro-container">
     <div id="intro-text">
       親愛的挑戰者你好：<br>
-      接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。準備好了就按下下方按鈕進行答題。
+      接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，
+      如果您得了滿分，會有驚喜小禮物。準備好了就按下下方按鈕進行答題。
     </div>
-    <button id="start-button">進入遊戲</button>
+    <button id="start-button" onclick="startGame()">進入遊戲</button>
   </div>
 
   <!-- 題目畫面 -->
-  <div id="quiz-container" style="display: none;">
+  <div id="quiz-container">
     <h2 id="question"></h2>
-    <div id="options"></div>
+    <div id="options">
+      <div class="option" onclick="selectOption(0)">
+        <div class="option-circle">A</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(1)">
+        <div class="option-circle">B</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(2)">
+        <div class="option-circle">C</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(3)">
+        <div class="option-circle">D</div>
+        <div class="option-text"></div>
+      </div>
+    </div>
+    <div id="timer"></div>
   </div>
 
-  <!-- 分數畫面 -->
+  <!-- 分數結算畫面 -->
   <div id="score-container" style="display: none;">
     <div id="score-title">加密貨幣答人指數</div>
     <div id="score-value">您得分</div>
-    <div id="leaderboard-container"></div>
+    <div id="date-time"></div>
+    <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
   </div>
 
+  <!-- 主模組：包含 Firebase 初始化、遊戲邏輯以及題庫模組的匯入 -->
   <script type="module">
+    // 匯入 Firebase 模組
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    // 匯入外部題庫模組 (請依您的檔案位置調整路徑)
+    import { questionPool } from './questions.js';
 
+    // Firebase 設定與初始化
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      databaseURL: "YOUR_DATABASE_URL",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyAbtY6rbLP96hLZzrCZlfQf-ON9LuH3pGM",
+      authDomain: "leaderboardapp-a29f3.firebaseapp.com",
+      databaseURL: "https://leaderboardapp-a29f3-default-rtdb.firebaseio.com",
+      projectId: "leaderboardapp-a29f3",
+      storageBucket: "leaderboardapp-a29f3.firebasestorage.app",
+      messagingSenderId: "308303699906",
+      appId: "1:308303699906:web:d6505c7431f1798a0d405b"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const questionPool = [
-      { question: "什麼是加密貨幣？", options: ["選項A", "選項B", "選項C", "選項D"], answer: 1 },
-      // Add more questions...
-    ];
+    // 將提交分數與取得排行榜的函式掛在全域（window）上，以供內嵌 onclick 使用
+    window.submitScore = function(playerName, score) {
+      push(ref(db, "scores"), { name: playerName, score: score });
+      console.log("已送出分數:", playerName, score);
+    };
 
+    window.getLeaderboard = function(callback) {
+      onValue(ref(db, "scores"), (snapshot) => {
+        const data = snapshot.val() || {};
+        const arr = Object.values(data);
+        // 依分數從高到低排序
+        arr.sort((a, b) => b.score - a.score);
+        callback(arr);
+      });
+    };
+
+    // 遊戲邏輯相關變數與函式
+    let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
-
-    document.getElementById("start-button").addEventListener("click", startGame);
+    let timer;
+    let timeLeft = 20;
+    let startTime;
 
     function startGame() {
       document.getElementById("intro-container").style.display = "none";
       document.getElementById("quiz-container").style.display = "block";
+      questions = getRandomQuestions(questionPool, 10);
+      currentQuestionIndex = 0;
+      score = 0;
       loadQuestion();
     }
 
-    function loadQuestion() {
-      const question = questionPool[currentQuestionIndex];
-      document.getElementById("question").textContent = question.question;
-      const optionsContainer = document.getElementById("options");
-      optionsContainer.innerHTML = "";
-      question.options.forEach((option, index) => {
-        const optionDiv = document.createElement("div");
-        optionDiv.className = "option";
-        optionDiv.textContent = option;
-        optionDiv.addEventListener("click", () => selectOption(index));
-        optionsContainer.appendChild(optionDiv);
-      });
+    // 隨機取出題庫中的 num 題（注意不改變原陣列順序）
+    function getRandomQuestions(pool, num) {
+      const shuffled = [...pool].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
     }
 
-    function selectOption(selectedIndex) {
-      const question = questionPool[currentQuestionIndex];
-      if (selectedIndex === question.answer) score += 10;
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questionPool.length) {
-        loadQuestion();
-      } else {
-        endGame();
+    function loadQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById("question").textContent = currentQuestion.question;
+      const options = document.getElementsByClassName("option-text");
+      for (let i = 0; i < options.length; i++) {
+        options[i].textContent = currentQuestion.options[i];
+      }
+      startTime = Date.now();
+      timeLeft = 20;
+      document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      timeLeft--;
+      document.getElementById("timer").textContent = `剩餘時間：${timeLeft} 秒`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        nextQuestion();
       }
     }
 
-    function endGame() {
-      document.getElementById("quiz-container").style.display = "none";
-      document.getElementById("score-container").style.display = "block";
-      document.getElementById("score-value").textContent = `您的得分：${score}`;
-      const leaderboardRef = ref(db, "leaderboard");
-      push(leaderboardRef, { score });
-      showLeaderboard();
+    function selectOption(optionIndex) {
+      clearInterval(timer);
+      const currentQuestion = questions[currentQuestionIndex];
+      const elapsedTime = (Date.now() - startTime) / 1000;
+      // 答對才給分，根據答題速度計分
+      if (optionIndex === currentQuestion.answer) {
+        if (elapsedTime <= 5) {
+          score += 10;
+        } else if (elapsedTime <= 10) {
+          score += 5;
+        }
+      }
+      nextQuestion();
     }
 
-    function showLeaderboard() {
-      const leaderboardRef = ref(db, "leaderboard");
-      onValue(leaderboardRef, (snapshot) => {
-        const data = snapshot.val();
-        const sortedData = Object.values(data).sort((a, b) => b.score - a.score).slice(0, 10);
-        const leaderboardContainer = document.getElementById("leaderboard-container");
-        leaderboardContainer.innerHTML = "";
-        sortedData.forEach((entry, index) => {
-          const div = document.createElement("div");
-          div.className = "leaderboard-item";
-          div.innerHTML = `<span>${index + 1}. 名稱未知</span><span>${entry.score} 分</span>`;
-          leaderboardContainer.appendChild(div);
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        displayScore();
+      }
+    }
+
+    function displayScore() {
+      document.getElementById("quiz-container").style.display = "none";
+      const scoreContainer = document.getElementById("score-container");
+      scoreContainer.style.display = "block";
+      document.getElementById("score-value").textContent = score;
+
+      // 顯示評語
+      let feedback = "";
+      if (score < 40) feedback = "菜就多練";
+      else if (score < 60) feedback = "有點東西";
+      else if (score < 80) feedback = "還可以";
+      else if (score < 100) feedback = "牛逼差一點";
+      else feedback = "到資二甲領取麥香一杯";
+
+      const feedbackElement = document.createElement("div");
+      feedbackElement.textContent = feedback;
+      feedbackElement.style.fontSize = "1.5em";
+      feedbackElement.style.marginTop = "10px";
+      feedbackElement.style.color = "#333";
+      scoreContainer.appendChild(feedbackElement);
+
+      // 顯示目前日期與時間
+      const dateTimeElement = document.getElementById("date-time");
+      const currentDate = new Date();
+      const formattedDateTime = 
+        `${currentDate.getFullYear()}/${
+          String(currentDate.getMonth()+1).padStart(2,'0')
+        }/${
+          String(currentDate.getDate()).padStart(2,'0')
+        } ${
+          String(currentDate.getHours()).padStart(2,'0')
+        }:${
+          String(currentDate.getMinutes()).padStart(2,'0')
+        }`;
+      dateTimeElement.textContent = formattedDateTime;
+
+      // 建立輸入姓名與提交分數的介面
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.placeholder = "輸入姓名以顯示排行榜";
+      nameInput.style.marginTop = "15px";
+      nameInput.style.padding = "8px";
+      nameInput.style.width = "80%";
+      nameInput.style.border = "1px solid #ccc";
+      nameInput.style.borderRadius = "4px";
+
+      const submitButton = document.createElement("button");
+      submitButton.textContent = "提交分數";
+      submitButton.style.marginTop = "10px";
+      submitButton.style.padding = "8px 16px";
+      submitButton.style.border = "1px solid #ccc";
+      submitButton.style.borderRadius = "4px";
+      submitButton.style.cursor = "pointer";
+      submitButton.style.backgroundColor = "#fff";
+      submitButton.style.color = "#000";
+      submitButton.addEventListener("click", function () {
+        const playerName = nameInput.value.trim();
+        if (!playerName) {
+          alert("請輸入名稱");
+          return;
+        }
+        window.submitScore(playerName, score);
+
+        // 提交後隱藏輸入與按鈕
+        nameInput.style.display = "none";
+        submitButton.style.display = "none";
+
+        // 顯示提交成功訊息
+        const successMessage = document.createElement("div");
+        successMessage.textContent = "分數已提交，感謝您的參與！請稍待片刻取得排行榜資料";
+        successMessage.style.marginTop = "20px";
+        successMessage.style.fontSize = "1.2em";
+        successMessage.style.color = "#333";
+        scoreContainer.appendChild(successMessage);
+
+        // 取得排行榜資料並顯示
+        window.getLeaderboard((arr) => {
+          console.log("排行榜資料：", arr);
+          showLeaderboard(arr);
         });
       });
+
+      scoreContainer.appendChild(nameInput);
+      scoreContainer.appendChild(submitButton);
     }
+
+    function showLeaderboard(arr) {
+      let leaderboardContainer = document.getElementById("leaderboard-container");
+      if (!leaderboardContainer) {
+        leaderboardContainer = document.createElement("div");
+        leaderboardContainer.id = "leaderboard-container";
+        document.getElementById("score-container").appendChild(leaderboardContainer);
+      } else {
+        leaderboardContainer.innerHTML = "";
+      }
+
+      const title = document.createElement("h3");
+      title.textContent = "排行榜";
+      leaderboardContainer.appendChild(title);
+
+      const listContainer = document.createElement("div");
+      listContainer.className = "list-container";
+      leaderboardContainer.appendChild(listContainer);
+
+      arr.slice(0, 10).forEach((entry, index) => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+
+        const namePart = document.createElement("span");
+        namePart.textContent = `${index + 1}. ${entry.name}`;
+
+        const scorePart = document.createElement("span");
+        scorePart.textContent = `${entry.score} 分`;
+
+        item.appendChild(namePart);
+        item.appendChild(scorePart);
+        listContainer.appendChild(item);
+      });
+
+      if (arr.length === 0) {
+        const noDataMessage = document.createElement("div");
+        noDataMessage.textContent = "目前尚無排行榜資料";
+        noDataMessage.style.color = "#ff0000";
+        noDataMessage.style.marginTop = "10px";
+        listContainer.appendChild(noDataMessage);
+      }
+    }
+
+    // 為了讓 HTML 中的 onclick 可以正確呼叫，將相關函式掛在 window 上
+    window.startGame = startGame;
+    window.selectOption = selectOption;
   </script>
 </body>
 </html>

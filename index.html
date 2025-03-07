@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DP2A的加密貨幣小測驗</title>
   <style>
    html, body {
@@ -196,6 +197,31 @@
     .list-item:last-child {
       border-bottom: none;
     }
+@media screen and (max-width: 768px) {
+    body {
+        background-size: contain; 
+    }
+
+    .container {
+        width: 90%; 
+        padding: 15px;
+    }
+
+    #quiz-container {
+        width: 100%; 
+    }
+
+    .option {
+        font-size: 1em;/
+        padding: 10px;
+    }
+
+    #timer {
+        font-size: 1.2em; 
+        bottom: 10px; 
+        right: 10px;
+    }
+}
   </style>
 </head>
 <body>

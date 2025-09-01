@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DP2A的加密貨幣小測驗</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 開場畫面 -->
+  <div id="intro-container" class="container">
+    <div id="intro-text">
+      親愛的挑戰者你好：<br />
+      接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。<br />
+      準備好了就按下下方按鈕進行答題。
+    </div>
+    <button id="start-button" onclick="startGame()">進入遊戲</button>
+  </div>
+
+  <!-- 題目畫面 -->
+  <div id="quiz-container" class="container">
+    <h2 id="question"></h2>
+    <div id="options">
+      <div class="option" onclick="selectOption(0)">
+        <div class="option-circle">A</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(1)">
+        <div class="option-circle">B</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(2)">
+        <div class="option-circle">C</div>
+        <div class="option-text"></div>
+      </div>
+      <div class="option" onclick="selectOption(3)">
+        <div class="option-circle">D</div>
+        <div class="option-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分數結算畫面 -->
+  <div id="score-container" class="container">
+    <div id="score-title">加密貨幣答人指數</div>
+    <div id="score-value">0</div>
+    <div id="date-time"></div>
+    <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
+  </div>
+
+  <!-- 計時器 -->
+  <div id="timer"></div>
+
+  <!-- 遊戲邏輯 -->
+  <script type="module" src="game.js"></script>
+</body>
+</html>

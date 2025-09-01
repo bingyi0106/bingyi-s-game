@@ -1,22 +1,18 @@
 :root {
-  --primary-color: #2c3e50;
-  --accent-color: #4f46e5;
-  --container-bg: rgba(255, 255, 255, 0.85);
-  --border-color: #4f46e5;
-  --button-bg: #4f46e5;
-  --button-text: #fff;
-  --shadow-color: #4f46e5;
+  --primary-color: #000;
+  --accent-color: #000;
+  --container-bg: #fff;
+  --border-color: #000;
+  --button-bg: #fff;
+  --button-text: #000;
+  --shadow-color: #000;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background-image: url('background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #fff;
   color: var(--primary-color);
   display: flex;
   flex-direction: column;
@@ -129,11 +125,56 @@ html, body {
   border: 2px solid var(--border-color);
   border-radius: 4px;
   padding: 8px 12px;
+  box-shadow: -2px 2px 0 var(--shadow-color);
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 #score-container {
   display: none;
   text-align: center;
+}
+
+#score-title {
+  font-size: 1.6em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#score-value {
+  font-size: 2em;
+  margin: 10px 0;
+}
+
+#date-time {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+#make-own {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 1em;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 8px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: -2px 2px 0 var(--shadow-color);
+  transition: 0.15s ease-in-out;
+}
+
+#make-own:hover {
+  box-shadow: -4px 4px 0 var(--shadow-color);
+  transform: translate(-2px, -2px);
 }
 
 .feedback {

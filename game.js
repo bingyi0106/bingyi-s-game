@@ -102,9 +102,9 @@ function selectOption(optionIndex) {
 
   if (optionIndex === currentQuestion.answer) {
     if (elapsedTime <= 5) {
-      score += 15;
+  score += 10;
     } else if (elapsedTime <= 10) {
-      score += 10;
+      score += 5
     }
   }
   nextQuestion();

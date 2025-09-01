@@ -1,0 +1,205 @@
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #4f46e5;
+  --container-bg: rgba(255, 255, 255, 0.85);
+  --border-color: #4f46e5;
+  --button-bg: #4f46e5;
+  --button-text: #fff;
+  --shadow-color: #4f46e5;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.container {
+  width: 600px;
+  max-width: 90%;
+  min-height: 400px;
+  background-color: var(--container-bg);
+  padding: 20px;
+  border: 3px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: -3px 3px 0 var(--shadow-color);
+  margin-bottom: 20px;
+  position: relative;
+  transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.container:hover {
+  box-shadow: -5px 5px 0 var(--shadow-color);
+  transform: translate(-2px, -2px);
+}
+
+#intro-text {
+  font-size: 1.1em;
+  line-height: 1.5;
+}
+
+#start-button {
+  font-size: 1.2em;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 2px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: -2px 2px 0 var(--shadow-color);
+  transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+  margin-top: 10px;
+}
+
+#start-button:hover {
+  box-shadow: -4px 4px 0 var(--shadow-color);
+  transform: translate(-2px, -2px);
+}
+
+#quiz-container {
+  display: none;
+}
+
+#question {
+  font-size: 1.3em;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+#options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  background-color: var(--container-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: -2px 2px 0 var(--shadow-color);
+  transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.option:hover {
+  box-shadow: -4px 4px 0 var(--shadow-color);
+  transform: translate(-2px, -2px);
+}
+
+.option-circle {
+  width: 30px;
+  height: 30px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.option-text {
+  flex: 1;
+}
+
+#timer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.2em;
+  color: var(--primary-color);
+  background-color: var(--container-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+#score-container {
+  display: none;
+  text-align: center;
+}
+
+.feedback {
+  font-size: 1em;
+  margin-top: 10px;
+  color: #333;
+}
+
+.name-input {
+  margin-top: 15px;
+  padding: 8px;
+  width: 80%;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.submit-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  box-shadow: -2px 2px 0 var(--shadow-color);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.submit-button:hover {
+  box-shadow: -4px 4px 0 var(--shadow-color);
+  transform: translate(-2px, -2px);
+}
+
+.success-message {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+#leaderboard-container {
+  margin-top: 20px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.no-data {
+  color: #999;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    min-height: auto;
+  }
+
+  #timer {
+    font-size: 1em;
+  }
+}

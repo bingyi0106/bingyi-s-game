@@ -223,6 +223,7 @@
     }
 }
   </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -234,6 +235,7 @@
       準備好了就按下下方按鈕進行答題。
     </div>
     <button id="start-button" onclick="startGame()">進入遊戲</button>
+    <button id="start-button">進入遊戲</button>
   </div>
 
   <!-- 題目畫面 -->
@@ -241,18 +243,22 @@
     <h2 id="question"></h2>
     <div id="options">
       <div class="option" onclick="selectOption(0)">
+      <div class="option">
         <div class="option-circle">A</div>
         <div class="option-text"></div>
       </div>
       <div class="option" onclick="selectOption(1)">
+      <div class="option">
         <div class="option-circle">B</div>
         <div class="option-text"></div>
       </div>
       <div class="option" onclick="selectOption(2)">
+      <div class="option">
         <div class="option-circle">C</div>
         <div class="option-text"></div>
       </div>
       <div class="option" onclick="selectOption(3)">
+      <div class="option">
         <div class="option-circle">D</div>
         <div class="option-text"></div>
       </div>
@@ -260,9 +266,11 @@
   </div>
 
   <!-- 分數結算畫面 -->
+  <!-- 分數畫面 -->
   <div id="score-container" class="container">
     <div id="score-title">加密貨幣答人指數</div>
     <div id="score-value">0</div>
+    <h2>你的分數：<span id="score-value">0</span></h2>
     <div id="date-time"></div>
     <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
   </div>
@@ -620,5 +628,6 @@
     window.startGame = startGame;
     window.selectOption = selectOption;
   </script>
+  <script type="module" src="game.js"></script>
 </body>
 </html>

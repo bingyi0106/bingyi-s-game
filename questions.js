@@ -1,5 +1,6 @@
+// 注意：一定要用 export const 開頭
 export const questionPool = [
-     {
+      {
         question: "什麼是加密貨幣？",
         options: ["由銀行發行的數字貨幣", "一種基於區塊鏈技術的數字資產", "網路遊戲的虛擬幣", "用來支付實體貨幣的替代物"],
         answer: 1
@@ -99,6 +100,6 @@ export const questionPool = [
         options: ["採用通脹政策", "增加貨幣供應", "法規的透明和合理的監管", "交易時間的延長"],
         answer: 2
       }
-    ];
+   ];
 
 

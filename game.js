@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebas
 import { 
     getDatabase, ref, push, get, query, orderByChild, limitToLast 
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-// 記得確認你的題庫檔名是 questions.js
+// 確保你的 questions.js 檔案存在且內容正確
 import { questionPool } from "./questions.js";
 
 // Firebase 設定
@@ -23,15 +23,15 @@ const db = getDatabase(app);
 const els = {
     intro: document.getElementById("intro-container"),
     quiz: document.getElementById("quiz-container"),
+    scoreContainer: document.getElementById("score-container"),
     question: document.getElementById("question"),
     options: Array.from(document.querySelectorAll(".option")), 
     optionTexts: document.querySelectorAll(".option-text"),
     timer: document.getElementById("timer"),
-    scoreContainer: document.getElementById("score-container"),
     scoreValue: document.getElementById("score-value"),
     dateTime: document.getElementById("date-time"),
     startBtn: document.getElementById("start-button"),
-    backLink: document.getElementById("make-own") // 用來定位插入點
+    backLinkContainer: document.querySelector(".back-link-container")
 };
 
 // 遊戲狀態
@@ -45,9 +45,17 @@ let gameState = {
     isAnswering: false
 };
 
-// --- 事件監聽 (Event Listeners) ---
-els.startBtn.addEventListener("click", startGame);
+// --- 初始化：確保一開始只顯示開場畫面 ---
+function init() {
+    els.intro.style.display = "block";
+    els.quiz.style.display = "none";
+    els.scoreContainer.style.display = "none";
+    els.timer.style.display = "none"; // 一開始隱藏計時器
+}
+init(); // 執行初始化
 
+// --- 事件監聽 ---
+els.startBtn.addEventListener("click", startGame);
 els.options.forEach((option, index) => {
     option.addEventListener("click", () => selectOption(index));
 });
@@ -59,7 +67,7 @@ function submitScore(playerName, score) {
         score: Number(score),
         timestamp: Date.now() 
     }).then(() => {
-        console.log("已送出分數:", playerName, score);
+        console.log("分數已送出");
     }).catch((err) => {
         console.error("送出失敗", err);
         alert("分數上傳失敗，請檢查網路");
@@ -70,7 +78,7 @@ function getLeaderboard(callback) {
     const topScoresQuery = query(
         ref(db, "scores"), 
         orderByChild("score"), 
-        limitToLast(10) // 只抓前10名
+        limitToLast(5) // 取前 5 名即可
     );
 
     get(topScoresQuery).then((snapshot) => {
@@ -82,7 +90,7 @@ function getLeaderboard(callback) {
         snapshot.forEach((childSnapshot) => {
             data.push(childSnapshot.val());
         });
-        data.reverse(); // 因為 Firebase 是由小到大排，我們要反轉
+        data.reverse(); 
         callback(data);
     }).catch((err) => {
         console.error("取得排行榜失敗", err);
@@ -92,16 +100,19 @@ function getLeaderboard(callback) {
 
 // --- 遊戲邏輯 ---
 function startGame() {
+    // 1. 切換畫面顯示
     els.intro.style.display = "none";
     els.scoreContainer.style.display = "none";
-    els.quiz.style.display = "block";
+    els.quiz.style.display = "flex"; // 使用 flex 讓內容居中
+    els.timer.style.display = "block"; // 顯示計時器
     
-    // 洗牌並取前10題
+    // 2. 重置遊戲狀態
     gameState.questions = getRandomQuestions(questionPool, 10);
     gameState.currentIndex = 0;
     gameState.score = 0;
     gameState.isAnswering = false;
     
+    // 3. 載入第一題
     loadQuestion();
 }
 
@@ -123,7 +134,6 @@ function loadQuestion() {
     const currentQ = gameState.questions[gameState.currentIndex];
     els.question.textContent = currentQ.question;
     
-    // 填入選項
     for (let i = 0; i < els.optionTexts.length; i++) {
         if (currentQ.options[i]) {
             els.optionTexts[i].textContent = currentQ.options[i];
@@ -138,7 +148,6 @@ function loadQuestion() {
     gameState.isAnswering = false;
     
     updateTimerDisplay();
-    
     if (gameState.timer) clearInterval(gameState.timer);
     gameState.timer = setInterval(updateTimer, 1000);
 }
@@ -146,7 +155,6 @@ function loadQuestion() {
 function updateTimer() {
     gameState.timeLeft--;
     updateTimerDisplay();
-    
     if (gameState.timeLeft <= 0) {
         clearInterval(gameState.timer);
         nextQuestion();
@@ -169,19 +177,16 @@ function selectOption(optionIndex) {
     const elapsedTime = (Date.now() - gameState.startTime) / 1000;
     const selectedEl = els.options[optionIndex];
 
-    // 答題回饋動畫
     if (optionIndex === currentQ.answer) {
-        selectedEl.style.borderColor = "#10b981"; // 綠
+        selectedEl.style.borderColor = "#10b981";
         selectedEl.style.boxShadow = "0 0 15px rgba(16, 185, 129, 0.5)";
-        
         if (elapsedTime <= 5) gameState.score += 10;
         else if (elapsedTime <= 10) gameState.score += 5;
     } else {
-        selectedEl.style.borderColor = "#ef4444"; // 紅
+        selectedEl.style.borderColor = "#ef4444";
         selectedEl.style.boxShadow = "0 0 15px rgba(239, 68, 68, 0.5)";
     }
     
-    // 延遲跳轉
     setTimeout(() => {
         selectedEl.style.borderColor = ""; 
         selectedEl.style.boxShadow = "";
@@ -195,78 +200,73 @@ function nextQuestion() {
 }
 
 function displayScore() {
+    // 1. 切換畫面顯示
+    els.intro.style.display = "none";
     els.quiz.style.display = "none";
-    els.timer.style.display = "none";
+    els.timer.style.display = "none"; // 隱藏計時器
     els.scoreContainer.style.display = "block";
 
+    // 2. 更新分數
     els.scoreValue.textContent = gameState.score;
     
-    // 清除舊的動態元件
-    const oldFeedback = document.querySelector(".feedback");
-    if(oldFeedback) oldFeedback.remove();
-    const oldInput = document.querySelector(".name-input-group");
-    if(oldInput) oldInput.remove();
-    const oldLeaderboard = document.getElementById("leaderboard-container");
-    if(oldLeaderboard) oldLeaderboard.remove();
+    // 3. 清理舊元素
+    document.querySelector(".feedback")?.remove();
+    document.querySelector(".name-input-group")?.remove();
+    document.getElementById("leaderboard-container")?.remove();
+    document.querySelector(".loading-msg")?.remove();
 
-    // 評語邏輯
-    let feedbackText = "";
-    if (gameState.score < 40) feedbackText = "DP2A 覺得你還要再練練！";
-    else if (gameState.score < 60) feedbackText = "對加密貨幣有點概念喔！";
-    else if (gameState.score < 80) feedbackText = "不錯不錯，快成為專家了！";
-    else if (gameState.score < 100) feedbackText = "太強了！只差一點點滿分！";
-    else feedbackText = "DP2A 加密貨幣大師就是你！";
-
-    const feedbackElement = document.createElement("div");
-    feedbackElement.textContent = feedbackText;
-    feedbackElement.className = "feedback";
-    feedbackElement.style.textAlign = "center";
-    feedbackElement.style.marginBottom = "20px";
-    feedbackElement.style.color = "#10b981";
-    feedbackElement.style.fontWeight = "bold";
-    
-    // 插入評語 (在日期之前)
+    // 4. 插入新元素
+    const feedbackElement = createFeedback(gameState.score);
     els.scoreContainer.insertBefore(feedbackElement, els.dateTime);
 
-    // 更新時間
     const now = new Date();
     els.dateTime.textContent = now.toLocaleString('zh-TW', { hour12: false });
 
-    // 建立輸入框
     createInputSection();
+}
+
+// 輔助函式：產生評語元素
+function createFeedback(score) {
+    let text = "";
+    let color = "#10b981"; // 預設綠色
+    if (score < 40) { text = "DP2A 覺得你還要再練練！"; color = "#ef4444"; }
+    else if (score < 60) { text = "對加密貨幣有點概念喔！"; color = "#fbbf24"; }
+    else if (score < 80) { text = "不錯不錯，快成為專家了！"; }
+    else if (score < 100) { text = "太強了！只差一點點滿分！"; }
+    else { text = "DP2A 加密貨幣大師就是你！"; }
+
+    const el = document.createElement("div");
+    el.textContent = text;
+    el.className = "feedback";
+    el.style.color = color;
+    return el;
 }
 
 function createInputSection() {
     const group = document.createElement("div");
     group.className = "name-input-group";
-    group.style.display = "flex";
-    group.style.flexDirection = "column";
-    group.style.alignItems = "center";
-    group.style.gap = "15px";
-    group.style.marginBottom = "20px";
 
     const nameInput = document.createElement("input");
     nameInput.type = "text";
-    nameInput.placeholder = "輸入姓名以顯示排行榜";
+    nameInput.placeholder = "輸入暱稱 (最多10字)";
+    nameInput.maxLength = 10;
     
     const submitButton = document.createElement("button");
     submitButton.textContent = "提交分數";
 
     submitButton.onclick = () => {
         const playerName = nameInput.value.trim();
-        if (!playerName) {
-            alert("請輸入名稱");
-            return;
-        }
+        if (!playerName) { alert("請輸入暱稱"); return; }
         
-        group.style.display = "none"; // 隱藏輸入框
+        group.style.display = "none";
         submitScore(playerName, gameState.score);
         
         const loadingMsg = document.createElement("div");
         loadingMsg.textContent = "讀取排行榜中...";
-        loadingMsg.style.textAlign = "center";
-        loadingMsg.style.color = "#94a3b8";
-        els.scoreContainer.insertBefore(loadingMsg, els.backLink);
+        loadingMsg.className = "loading-msg";
+        loadingMsg.style.color = "#cbd5e1";
+        loadingMsg.style.marginBottom = "2rem";
+        els.scoreContainer.insertBefore(loadingMsg, els.backLinkContainer);
 
         getLeaderboard((arr) => {
             loadingMsg.remove();
@@ -276,8 +276,7 @@ function createInputSection() {
 
     group.appendChild(nameInput);
     group.appendChild(submitButton);
-    // 插入在 "回到官網" 連結之前
-    els.scoreContainer.insertBefore(group, els.backLink);
+    els.scoreContainer.insertBefore(group, els.backLinkContainer);
 }
 
 function showLeaderboard(arr) {
@@ -285,47 +284,36 @@ function showLeaderboard(arr) {
     container.id = "leaderboard-container";
     
     const title = document.createElement("h3");
-    title.textContent = "排行榜";
+    title.textContent = "排行榜 Top 5";
     container.appendChild(title);
 
     const list = document.createElement("div");
     
     if (arr.length === 0) {
-        list.innerHTML = "<div style='text-align:center; color:#94a3b8;'>目前尚無資料</div>";
+        list.innerHTML = "<div style='text-align:center; color:#cbd5e1; padding: 20px;'>目前尚無資料，快來當第一名！</div>";
     } else {
         arr.forEach((entry, index) => {
             const item = document.createElement("div");
             item.className = "list-item";
-            
-            // 前三名顏色
             if(index === 0) item.style.color = "#fbbf24";
             else if(index === 1) item.style.color = "#cbd5e1"; 
             else if(index === 2) item.style.color = "#b45309"; 
-
             item.innerHTML = `<span>${index + 1}. ${entry.name}</span> <span>${entry.score} 分</span>`;
             list.appendChild(item);
         });
     }
-
     container.appendChild(list);
-    els.scoreContainer.insertBefore(container, els.backLink);
+    els.scoreContainer.insertBefore(container, els.backLinkContainer);
 }
 
-// --- 滑鼠跟隨特效 ---
-document.addEventListener('mousemove', (e) => {
+// 滑鼠跟隨特效
+const handleMouseMove = (e) => {
     const x = (e.clientX / window.innerWidth) * 100;
     const y = (e.clientY / window.innerHeight) * 100;
     document.documentElement.style.setProperty('--mouse-x', x + '%');
     document.documentElement.style.setProperty('--mouse-y', y + '%');
-});
-
-// 手機版觸控支援
+};
+document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('touchmove', (e) => {
-    if(e.touches.length > 0) {
-        const touch = e.touches[0];
-        const x = (touch.clientX / window.innerWidth) * 100;
-        const y = (touch.clientY / window.innerHeight) * 100;
-        document.documentElement.style.setProperty('--mouse-x', x + '%');
-        document.documentElement.style.setProperty('--mouse-y', y + '%');
-    }
+    if(e.touches.length > 0) handleMouseMove(e.touches[0]);
 });

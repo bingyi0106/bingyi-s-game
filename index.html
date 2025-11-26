@@ -12,20 +12,18 @@
 
     <div id="intro-container">
       <h1>DP2A 加密貨幣小測驗</h1>
-      <div id="intro-text" style="line-height: 1.6; color: #cbd5e1; margin-bottom: 2rem; text-align: center;">
+      <div id="intro-text">
         親愛的挑戰者你好：<br /><br />
         接下來會出 10 道題來測驗您有沒有認真看我們用心製作的網頁。<br />
         如果您得了滿分，會有驚喜小禮物。<br />
         準備好了就按下下方按鈕進行答題。
       </div>
-      <div style="text-align: center;">
+      <div>
         <button id="start-button">進入遊戲</button>
       </div>
     </div>
 
-    <div id="quiz-container" style="display: none;">
-      <div id="timer">剩餘時間：20 秒</div>
-      
+    <div id="quiz-container">
       <div id="question">題目載入中...</div>
       
       <div id="options-container">
@@ -36,18 +34,21 @@
       </div>
     </div>
 
+    <div id="timer" style="display: none;">剩餘時間：20 秒</div>
+
+
     <div id="score-container" style="display: none;">
       <h2>測驗結束</h2>
-      <div style="text-align: center; color: #94a3b8; margin-bottom: 10px;">加密貨幣答人指數</div>
+      <div class="score-label">加密貨幣答人指數</div>
       
-      <div style="text-align: center; margin-bottom: 1rem;">
-        <span id="score-value" style="font-size: 3rem; font-weight: bold; color: #fbbf24;">0</span>
+      <div class="score-display">
+        <span id="score-value">0</span>
       </div>
 
-      <div id="date-time" style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 20px;"></div>
+      <div id="date-time"></div>
 
-      <div style="text-align: center; margin-top: 30px;">
-        <a id="make-own" href="https://strong-confidence-576407.framer.app/" style="color: #3b82f6; text-decoration: none; border-bottom: 1px dashed #3b82f6; padding-bottom: 2px; font-size: 0.9rem;">
+      <div class="back-link-container">
+        <a id="make-own" href="https://strong-confidence-576407.framer.app/">
           GET BACK TO OUR WEBSITE
         </a>
       </div>

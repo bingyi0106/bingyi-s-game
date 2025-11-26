@@ -229,7 +229,7 @@ function displayScore() {
 function createFeedback(score) {
     let text = "";
     let color = "#10b981"; // 預設綠色
-    if (score < 40) { text = "DP2A 覺得你還要再練練！"; color = "#ef4444"; }
+    if (score < 40) { text = "DP3A 覺得你還要再練練！"; color = "#ef4444"; }
     else if (score < 60) { text = "對加密貨幣有點概念喔！"; color = "#fbbf24"; }
     else if (score < 80) { text = "不錯不錯，快成為專家了！"; }
     else if (score < 100) { text = "太強了！只差一點點滿分！"; }

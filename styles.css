@@ -1,18 +1,15 @@
 /* --- 1. 全域變數與基本設定 --- */
 :root {
   --bg-color: #0f172a;       /* 深藍背景 */
-  --card-bg: rgba(30, 41, 59, 0.7); /* 卡片半透明背景 */
+  --card-bg: rgba(30, 41, 59, 0.75); /* 卡片背景 (稍微不透明一點，提升文字閱讀性) */
   --primary: #3b82f6;        /* 主色調：亮藍 */
   --accent: #8b5cf6;         /* 強調色：紫色 */
   --text-main: #f1f5f9;      /* 主文字：幾乎白 */
-  --text-muted: #94a3b8;     /* 次文字：灰藍 */
+  --text-muted: #cbd5e1;     /* 次文字：淺灰藍 */
   --success: #10b981;        /* 成功綠 */
   --error: #ef4444;          /* 錯誤紅 */
-  --gold: #fbbf24;           /* 金牌 */
-  --silver: #cbd5e1;         /* 銀牌 */
-  --bronze: #b45309;         /* 銅牌 */
   
-  /* 滑鼠座標變數 (JS 會更新這兩個值) */
+  /* 滑鼠座標變數 */
   --mouse-x: 50%;
   --mouse-y: 50%;
 }
@@ -21,7 +18,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', 'Microsoft JhengHei', Roboto, sans-serif; /* 加入微軟正黑體 */
 }
 
 body {
@@ -31,189 +28,259 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  overflow-x: hidden; /* 防止捲軸出現 */
-  
-  /* 動態聚光燈背景效果 */
+  overflow-x: hidden;
   background-image: 
     radial-gradient(
       circle at var(--mouse-x) var(--mouse-y), 
       rgba(59, 130, 246, 0.15) 0%, 
       transparent 50%
     );
+  padding: 20px; /* 防止手機版貼邊 */
 }
 
 /* --- 2. 玻璃擬態主容器 (#app) --- */
 #app {
-  width: 90%;
-  max-width: 600px;
+  width: 100%;
+  max-width: 700px; /* 加大寬度 */
   background: var(--card-bg);
-  
-  /* 毛玻璃核心語法 */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 2rem;
+  border-radius: 24px; /* 更圓潤 */
+  padding: 3rem; /* 增加內部間距 */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  
-  position: relative;
+  position: relative; /* 重要：讓計時器可以根據這個容器定位 */
   overflow: hidden;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;           /* 讓內部元素可以居中 */
+  flex-direction: column;  /* 垂直排列 */
+  justify-content: center; /* 垂直居中 */
+  min-height: 600px;       /* 設定最小高度，確保畫面夠大 */
 }
 
-/* --- 3. 文字與標題樣式 --- */
-h1, h2, h3 {
+/* --- 3. 通用文字樣式 --- */
+h1, h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
-  /* 文字漸層色 */
-  background: linear-gradient(to right, #fff, #94a3b8);
+  margin-bottom: 2rem;
+  font-size: 2rem; /* 加大標題 */
+  background: linear-gradient(to right, #fff, #cbd5e1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
 }
 
+h3 {
+    text-align: center;
+    margin: 1.5rem 0 1rem;
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+/* --- 4. 開場畫面 --- */
+#intro-container {
+    text-align: center;
+}
+
+#intro-text {
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    font-size: 1.2rem; /* 加大開場文字 */
+}
+
+/* --- 5. 題目畫面 (居中與放大) --- */
+#quiz-container {
+    display: none; /* 預設隱藏 */
+    width: 100%;
+    /* 確保內容在容器內居中 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #question {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1.6rem; /* 加大題目字體 */
+  line-height: 1.5;
+  margin-bottom: 2.5rem;
   text-align: center;
   font-weight: 600;
   color: var(--text-main);
+  width: 100%;
 }
 
-/* --- 4. 選項按鈕樣式 --- */
+#options-container {
+    width: 100%;
+}
+
 .option {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 12px;
+  padding: 1.2rem 2rem; /* 加大選項按鈕內距 */
+  margin-bottom: 1.2rem;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
   display: flex;
   align-items: center;
-  position: relative;
-  overflow: hidden;
+  font-size: 1.2rem; /* 加大選項文字 */
 }
 
 .option:hover {
   background: rgba(59, 130, 246, 0.2);
   border-color: var(--primary);
-  transform: translateX(5px) scale(1.01);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  transform: scale(1.02);
 }
 
-.option:active {
-  transform: scale(0.98);
-}
-
-/* 選項前面的裝飾小圓點 */
+/* 選項前的小圓點 */
 .option::before {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--text-muted);
   margin-right: 15px;
-  transition: background 0.3s;
+}
+.option:hover::before { background: var(--primary); }
+
+
+/* --- 6. 計時器 (固定右下角) --- */
+#timer {
+  position: absolute; /* 絕對定位 */
+  bottom: 25px;       /* 距離底部 */
+  right: 30px;        /* 距離右側 */
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.3rem;  /* 加大計時器文字 */
+  color: var(--accent);
+  background: rgba(0,0,0,0.3); /* 加個深色背景讓它更明顯 */
+  padding: 8px 15px;
+  border-radius: 10px;
+  /* 確保它浮在最上面，不會被其他東西蓋住 */
+  z-index: 10; 
 }
 
-.option:hover::before {
-  background: var(--primary);
-  box-shadow: 0 0 8px var(--primary);
+
+/* --- 7. 分數與結算畫面 (加大與拉開間距) --- */
+#score-container {
+    display: none; /* 預設隱藏 */
+    text-align: center;
+    width: 100%;
 }
 
-/* --- 5. 輸入框與按鈕 --- */
+.score-label {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.score-display {
+    margin-bottom: 2rem;
+}
+
+#score-value {
+    font-size: 4.5rem; /* 超大分數顯示 */
+    font-weight: 800;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+/* 評語樣式 (JS 插入) */
+.feedback {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
+}
+
+#date-time {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 3rem; /* 拉大時間與下方輸入框的距離 */
+}
+
+/* 輸入框群組 */
+.name-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 輸入框和按鈕之間的距離 */
+    margin-bottom: 3rem; /* 拉大與底部連結的距離 */
+    width: 100%;
+}
+
 input[type="text"] {
   width: 100%;
-  max-width: 300px;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 400px; /* 加大輸入框寬度 */
+  padding: 15px;    /* 加大輸入框內距 */
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
   background: rgba(0, 0, 0, 0.3);
   color: white;
   outline: none;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  font-size: 1.2rem; /* 加大輸入文字 */
   text-align: center;
 }
+input[type="text"]:focus { border-color: var(--primary); }
 
-input[type="text"]:focus {
-  border-color: var(--primary);
-}
 
+/* --- 8. 按鈕樣式 (加大) --- */
 button {
-  padding: 12px 30px;
-  border-radius: 8px;
+  padding: 15px 40px; /* 加大按鈕尺寸 */
+  border-radius: 12px;
   border: none;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   color: white;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.3rem; /* 加大按鈕文字 */
   cursor: pointer;
-  transition: opacity 0.3s, transform 0.2s;
+  transition: all 0.3s;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
-
 button:hover {
   opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-/* --- 6. 其他元件 --- */
-#timer {
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: var(--accent);
-  margin-bottom: 1.5rem;
-  background: rgba(0,0,0,0.2);
-  display: inline-block;
-  padding: 5px 15px;
-  border-radius: 20px;
-  /* 讓它在父元素置中 */
-  margin-left: auto;
-  margin-right: auto;
-  display: table; 
-}
-
-/* 排行榜列表 */
+/* --- 9. 排行榜列表 (加大與拉開間距) --- */
 #leaderboard-container {
   margin-top: 2rem;
+  margin-bottom: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 1rem;
-  max-height: 300px;
-  overflow-y: auto; /* 超出長度可捲動 */
+  width: 100%;
+  text-align: left; /* 列表靠左對齊比較好看 */
 }
 
 .list-item {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  animation: fadeIn 0.5s ease forwards;
+  padding: 18px 10px; /* 加大列表項目的間距 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 1.2rem; /* 加大列表文字 */
 }
 
-/* --- 7. 動畫定義 --- */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 回到官網連結 */
+.back-link-container {
+    margin-top: 2rem;
 }
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+#make-own {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 2px dashed var(--primary);
+    padding-bottom: 5px;
+    font-size: 1.1rem;
+    transition: all 0.3s;
 }
+#make-own:hover { color: var(--text-main); border-color: var(--text-main);}
 
-/* RWD 手機適配 */
+/* --- RWD 手機適配調整 --- */
 @media (max-width: 600px) {
   #app {
-    width: 100%;
-    min-height: 100vh;
-    border-radius: 0;
-    border: none;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
+    min-height: auto; /* 手機上不需要強制高度 */
   }
+  h1, h2 { font-size: 1.8rem; }
+  #question { font-size: 1.4rem; }
+  #score-value { font-size: 4rem; }
+  .option { padding: 1rem 1.5rem; font-size: 1.1rem; }
+  /* 手機版計時器位置微調 */
+  #timer { bottom: 15px; right: 15px; font-size: 1.1rem; padding: 6px 12px;}
 }

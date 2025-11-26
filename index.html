@@ -4,54 +4,57 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>DP2A的加密貨幣小測驗</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 開場畫面 -->
-  <div id="intro-container" class="container">
-    <div id="intro-text">
-      親愛的挑戰者你好：<br />
-      接下來會出10道題來測驗您有沒有認真看我們用心製作的網頁，如果您得了滿分，會有驚喜小禮物。<br />
-      準備好了就按下下方按鈕進行答題。
-    </div>
-    <button id="start-button" onclick="startGame()">進入遊戲</button>
-  </div>
 
-  <!-- 題目畫面 -->
-  <div id="quiz-container" class="container">
-    <h2 id="question"></h2>
-    <div id="options">
-      <div class="option" onclick="selectOption(0)">
-        <div class="option-circle">A</div>
-        <div class="option-text"></div>
+  <div id="app">
+
+    <div id="intro-container">
+      <h1>DP2A 加密貨幣小測驗</h1>
+      <div id="intro-text" style="line-height: 1.6; color: #cbd5e1; margin-bottom: 2rem; text-align: center;">
+        親愛的挑戰者你好：<br /><br />
+        接下來會出 10 道題來測驗您有沒有認真看我們用心製作的網頁。<br />
+        如果您得了滿分，會有驚喜小禮物。<br />
+        準備好了就按下下方按鈕進行答題。
       </div>
-      <div class="option" onclick="selectOption(1)">
-        <div class="option-circle">B</div>
-        <div class="option-text"></div>
-      </div>
-      <div class="option" onclick="selectOption(2)">
-        <div class="option-circle">C</div>
-        <div class="option-text"></div>
-      </div>
-      <div class="option" onclick="selectOption(3)">
-        <div class="option-circle">D</div>
-        <div class="option-text"></div>
+      <div style="text-align: center;">
+        <button id="start-button">進入遊戲</button>
       </div>
     </div>
+
+    <div id="quiz-container" style="display: none;">
+      <div id="timer">剩餘時間：20 秒</div>
+      
+      <div id="question">題目載入中...</div>
+      
+      <div id="options-container">
+        <div class="option"><span class="option-text"></span></div>
+        <div class="option"><span class="option-text"></span></div>
+        <div class="option"><span class="option-text"></span></div>
+        <div class="option"><span class="option-text"></span></div>
+      </div>
+    </div>
+
+    <div id="score-container" style="display: none;">
+      <h2>測驗結束</h2>
+      <div style="text-align: center; color: #94a3b8; margin-bottom: 10px;">加密貨幣答人指數</div>
+      
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <span id="score-value" style="font-size: 3rem; font-weight: bold; color: #fbbf24;">0</span>
+      </div>
+
+      <div id="date-time" style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 20px;"></div>
+
+      <div style="text-align: center; margin-top: 30px;">
+        <a id="make-own" href="https://strong-confidence-576407.framer.app/" style="color: #3b82f6; text-decoration: none; border-bottom: 1px dashed #3b82f6; padding-bottom: 2px; font-size: 0.9rem;">
+          GET BACK TO OUR WEBSITE
+        </a>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 分數結算畫面 -->
-  <div id="score-container" class="container">
-    <div id="score-title">加密貨幣答人指數</div>
-    <div id="score-value">0</div>
-    <div id="date-time"></div>
-    <a id="make-own" href="https://strong-confidence-576407.framer.app/">GET BACK TO OUR WEBSIDE</a>
-  </div>
-
-  <!-- 計時器 -->
-  <div id="timer"></div>
-
-  <!-- 遊戲邏輯 -->
   <script type="module" src="game.js"></script>
 </body>
 </html>

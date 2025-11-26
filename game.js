@@ -229,11 +229,11 @@ function displayScore() {
 function createFeedback(score) {
     let text = "";
     let color = "#10b981"; // 預設綠色
-    if (score < 40) { text = "DP3A 覺得你還要再練練！"; color = "#ef4444"; }
+    if (score < 40) { text = "菜就多練！"; color = "#ef4444"; }
     else if (score < 60) { text = "對加密貨幣有點概念喔！"; color = "#fbbf24"; }
     else if (score < 80) { text = "不錯不錯，快成為專家了！"; }
     else if (score < 100) { text = "太強了！只差一點點滿分！"; }
-    else { text = "DP2A 加密貨幣大師就是你！"; }
+    else { text = "加密貨幣大師就是你！"; }
 
     const el = document.createElement("div");
     el.textContent = text;
@@ -296,7 +296,7 @@ function showLeaderboard(arr) {
             const item = document.createElement("div");
             item.className = "list-item";
             if(index === 0) item.style.color = "#fbbf24";
-            else if(index === 1) item.style.color = "#cbd5e1"; 
+            else if(index === 1) item.style.color = "#b45309"; 
             else if(index === 2) item.style.color = "#b45309"; 
             item.innerHTML = `<span>${index + 1}. ${entry.name}</span> <span>${entry.score} 分</span>`;
             list.appendChild(item);
